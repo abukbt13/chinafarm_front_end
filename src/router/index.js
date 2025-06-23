@@ -1,25 +1,41 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import Home from "../views/Home.vue";
+import { createRouter, createWebHistory } from 'vue-router';
+import Home from '../views/Home.vue';
 
-import adminRoutes from './adminRoutes'
-import userRoutes from './userRoutes'
+import adminRoutes from './adminRoutes';
+import userRoutes from './userRoutes';
+import auth from './auth.js';
+import Dashboard from '../views/Admin/Dashboard.vue';
 
-// Combine all route arrays
 const routes = [
     ...userRoutes,
     ...adminRoutes,
-    // You can add more route files here
-
+    ...auth,
+    {
+        path: '/admin',
+        name: 'AdminDashboard',
+        component: Dashboard,
+        meta: { requiresAuth: true },
+    },
     {
         path: '/',
-        component: Home
-    },
-
-]
+        name: 'Home',
+        component: Home,
+    }
+];
 
 const router = createRouter({
     history: createWebHistory(),
-    routes
-})
+    routes,
+});
 
-export default router
+router.beforeEach((to, from, next) => {
+    const token = localStorage.getItem('token'); // ensure this matches your login logic
+
+    if (to.meta.requiresAuth && !token) {
+        next({ name: 'Login' });
+    } else {
+        next();
+    }
+});
+
+export default router;
