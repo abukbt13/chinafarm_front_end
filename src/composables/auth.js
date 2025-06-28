@@ -24,7 +24,7 @@ export function auth() {
             isLoggedIn.value = true
         } catch (error) {
             console.error('Failed to fetch user:', error)
-            await router.push('/login')
+            // await router.push('/login')
             user.value = null
             isLoggedIn.value = false
         }

@@ -25,7 +25,7 @@ const blogs = [
 </script>
 
 <template>
-  <section class="container py-5">
+  <section class="container ">
     <h2 class="text-center mb-5 text-success fw-bold">Latest Blog Posts</h2>
     <div class="row g-4">
       <div v-for="blog in blogs" :key="blog.id" class="col-12 col-md-4">

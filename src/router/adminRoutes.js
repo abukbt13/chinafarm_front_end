@@ -1,6 +1,8 @@
 import AdminDashboard from "../views/Admin/AdminDashboard.vue";
 import AdminHome from "../views/Admin/AdminHome.vue";
 import ActiveCrops from "../components/ActiveCrops.vue";
+import LatestBlogs from "../components/LatestBlogs.vue";
+import FarmProgress from "../views/Admin/FarmProgress.vue";
 
 export default [
     {
@@ -13,9 +15,18 @@ export default [
                 component: AdminHome
             },
             {
-                path: 'progress',
+                path: 'farm-progress',
                 name: 'ActiveCrops',
                 component: ActiveCrops
+            },
+            {
+                path: 'farm-progress/:id',
+                component: FarmProgress
+            },
+            {
+                path: 'blogs',
+                name: 'blogs',
+                component: LatestBlogs
             }
         ]
     }

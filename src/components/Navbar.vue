@@ -1,11 +1,11 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 
-import axios from 'axios'
 import router from '../router'
+import api from "../composables/axios.js";
+import {auth} from "../composables/auth.js";
 const isCollapsed = ref(true)
-const isLoggedIn = ref(false)
-
+const {user,isLoggedIn,AuthUser} =auth()
 onMounted(() => {
   const token = localStorage.getItem('token')
   isLoggedIn.value = !!token
@@ -22,22 +22,24 @@ const toggleNav = () => {
   }
 
   try {
-    await axios.post('http://127.0.0.1:8000/api/logout', null, {
+    await api.post('logout', null, {
       headers: {
         Authorization: `Bearer ${token}`
       }
     })
 
     localStorage.removeItem('token')
-    router.push({ name: 'login' })
+    await router.push('/login')
   } catch (error) {
     console.error('Logout failed', error)
     // Still remove token on failure
     localStorage.removeItem('token')
-    await router.push({name: 'login'})
+    await router.push('/login')
   }
 }
-
+onMounted(()=>{
+  AuthUser()
+})
 </script>
 
 <template>
@@ -69,7 +71,8 @@ const toggleNav = () => {
             <div class="user-icon">
               <i class="bi bi-person-circle fs-4"></i>
               <div class="dropdown">
-                <router-link to="/dashboard">Dashboard</router-link>
+                <router-link to="/admin" v-if="user.role =='admin'">Dashboard</router-link>
+                <router-link to="/admin" v-else>guest</router-link>
                 <a @click.prevent="logout" class="dropdown-item" href="#">Logout</a>
               </div>
             </div>

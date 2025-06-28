@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import { useRouter } from 'vue-router';
 import axios from "axios";
 import Navbar from "../../components/Navbar.vue";
+import api from "../../composables/axios.js";
 
 const router = useRouter();
 
@@ -17,8 +18,8 @@ const form = ref({
 
 const submit = async () => {
   try {
-    const response = await axios.post('http://127.0.0.1:8000/api/register', form.value);
-    localStorage.setItem('token', response.data.token);
+    const res = await api.post('register', form.value);
+    localStorage.setItem('token', res.data.token);
 
     Swal.fire({
       icon: 'success',
@@ -26,13 +27,17 @@ const submit = async () => {
       timer: 1500,
       showConfirmButton: false,
     });
-
-    router.push('/dashboard');
+    if(res.data.user.role === 'admin'){
+      await router.push('/admin')
+    }
+    else {
+      await router.push('/guest')
+    }
   } catch (error) {
     Swal.fire({
       icon: 'error',
       title: 'Registration Failed',
-      text: error.response?.data?.message || 'Something went wrong',
+      text: error.res?.data?.message || 'Something went wrong',
     });
   }
 };
@@ -96,6 +101,8 @@ const submit = async () => {
               <button type="submit" class="btn btn-success w-100">Register</button>
             </form>
           </div>
+          <p class="text-center">Already have an account <router-link to="/login">Login here</router-link></p>
+
         </div>
       </div>
     </div>

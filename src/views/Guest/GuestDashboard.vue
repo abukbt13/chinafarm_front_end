@@ -1,39 +1,85 @@
-<script setup lang="ts">
-
+<script setup>
+import { onMounted } from 'vue'
 import Navbar from "../../components/Navbar.vue";
+
+onMounted(() => {
+  // Load Bootstrap’s Offcanvas JS if not globally loaded
+  import('bootstrap/dist/js/bootstrap.bundle.min.js')
+})
 </script>
 
 <template>
-  <div class="d-flex">
-    <!-- Sidebar -->
-    <aside class="bg-dark text-white p-3 vh-100" style="width: 250px;">
-      <h4 class="mb-4">China Farm</h4>
+  <Navbar />
+  <div class="d-flex" style="min-height: 100vh;">
+    <!-- Offcanvas Sidebar for Mobile -->
+    <div class="offcanvas offcanvas-start bg-success text-white" tabindex="-1" id="sidebarOffcanvas">
+      <div class="offcanvas-body">
+        <ul class="nav flex-column">
+          <li class="nav-item mb-2">
+            <router-link class="nav-link text-white" to="">Home</router-link>
+          </li>
+          <li class="nav-item mb-2">
+            <router-link class="nav-link text-white" to="/admin/dashboard">Dashboard</router-link>
+          </li>
+          <li class="nav-item mb-2">
+            <router-link class="nav-link text-white" to="/admin/progress">Farm Progress</router-link>
+          </li>
+          <li class="nav-item mb-2">
+            <router-link class="nav-link text-white" to="/admin/bookings">Bookings</router-link>
+          </li>
+          <li class="nav-item mb-2">
+            <router-link class="nav-link text-white" to="/admin/crops">Crops</router-link>
+          </li>
+          <li class="nav-item mb-2">
+            <router-link class="nav-link text-white" to="/admin/seedlings">Seedlings</router-link>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Static Sidebar for Desktop -->
+    <nav class="d-none d-md-block bg-success text-white p-3 vh-100" style="width: 250px;">
+      <h4 class="fw-bold mb-4">🌱 China Farm</h4>
       <ul class="nav flex-column">
         <li class="nav-item mb-2">
-          <a class="nav-link text-white" href="#">Dashboard</a>
+          <router-link class="nav-link text-white" to="/admin">Home</router-link>
+        </li>
+
+        <li class="nav-item mb-2">
+          <router-link class="nav-link text-white" to="/admin/progress">Farm Progress</router-link>
         </li>
         <li class="nav-item mb-2">
-          <a class="nav-link text-white" href="#">Users</a>
+          <router-link class="nav-link text-white" to="/admin/blogs">Blogs</router-link>
         </li>
         <li class="nav-item mb-2">
-          <a class="nav-link text-white" href="#">Bookings</a>
+          <router-link class="nav-link text-white" to="/admin/crops">Crops</router-link>
         </li>
         <li class="nav-item mb-2">
-          <a class="nav-link text-white" href="#">Vehicles</a>
+          <router-link class="nav-link text-white" to="/admin/seedlings">Seedlings</router-link>
         </li>
       </ul>
-    </aside>
+    </nav>
 
     <!-- Main Content -->
-    <main class="flex-grow-1 p-4">
-      <h2 class="mb-4">Dashboard</h2>
-      <div class="card">
-        Guest
+    <div class="flex-grow-1 w-100">
+      <!-- Top Navbar -->
+      <div class="bg-white d-block d-md-none  border-bottom d-flex align-items-center justify-content-between px-3 py-2 shadow-sm sticky-top">
+        <!-- Mobile Menu Toggle -->
+        <button class="btn btn-outline-success d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarOffcanvas">
+          ☰
+        </button>
       </div>
-    </main>
+      <!-- Page Content -->
+      <main class="container-fluid p-4 mt-3">
+        <router-view /> <!-- 👈 This renders the child route like ActiveCrops -->
+      </main>
+    </div>
   </div>
 </template>
 
 <style scoped>
-
+.nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+}
 </style>
