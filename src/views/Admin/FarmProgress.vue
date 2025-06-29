@@ -3,7 +3,8 @@ import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import axios from 'axios'
 import api from '../../composables/axios.js'
-
+import {storage_link} from "../../composables/storage_link.js";
+const {storage_url} =storage_link()
 const route = useRoute()
 
 const farmingSeason = ref(null)
@@ -33,7 +34,7 @@ const fetchFarmingPlant = async () => {
 // Fetch milestones
 const fetchMilestones = async () => {
   try {
-    const res = await api.get('/milestone/' + route.params.id) // Adjust if needed
+    const res = await api.get('/milestone/show/' + route.params.id) // Adjust if needed
     milestones.value = res.data.milestones
   } catch (err) {
     console.error(err)
@@ -48,10 +49,10 @@ const submitMilestone = async () => {
   newMilestone.value.pictures.forEach(file => {
     formData.append('pictures[]', file)
   })
-  formData.append('season_id', route.params.id) // if using FK
+  // formData.append('season_id', route.params.id) // if using FK
 
   try {
-    await api.post('/milestone', formData)
+    await api.post('/milestone/'+route.params.id, formData)
     await fetchMilestones()
     document.getElementById('closeModalBtn')?.click()
     newMilestone.value = { date: '', description: '', pictures: [] }
@@ -100,6 +101,24 @@ onMounted(() => {
           Add Milestone
         </button>
       </div>
+
+      <div v-if="milestones.length === 0" class="text-muted">
+        <h2>No milestone found!</h2>
+      </div>
+      <ul v-else class="list-group">
+        <li v-for="milestone in milestones" :key="milestone.id" class="list-group-item">
+         <h2>Description</h2>
+          <p>{{ milestone.description }}</p>
+
+          <div class="mt-2">
+            <img v-for="pic in milestone.pictures" :src="storage_url+pic" :key="pic" :alt="pic"
+                 class="img-thumbnail me-2" style="max-width: 150px;" />{{pic}}
+          </div>
+          <h4>Date</h4>
+          <strong>{{ milestone.date }}</strong>:
+        </li>
+      </ul>
+
     </div>
 
     <div class="tab-pane fade p-3" id="expense-tab-pane" role="tabpanel" aria-labelledby="expense-tab" tabindex="0">
