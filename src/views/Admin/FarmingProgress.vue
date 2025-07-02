@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import api from "../composables/axios.js"
-import { auth } from "../composables/auth.js"
+import api from "../../composables/axios.js"
+import { auth } from "../../composables/auth.js"
 import Modal from "bootstrap/js/dist/modal" // ✅ Correct Bootstrap Modal class
 
 const { user, isLoggedIn, AuthUser } = auth()
@@ -28,7 +28,7 @@ const formatDate = (dateStr) => {
 
 const FetchFarmingProgress =async ()=>{
   try {
-    const res = await api.get('farming-seasons') // Adjust the endpoint if needed
+    const res = await api.get('farming-progress') // Adjust the endpoint if needed
     plans.value = res.data.crops // Laravel API Resource format
 
   } catch (err) {
@@ -40,7 +40,7 @@ const saveCrop = async () => {
   success.value = false
 
   try {
-    const response = await api.post('farming-seasons', {
+    const response = await api.post('farming-progress', {
       crop: crop.value,
       start_date: startDate.value,
       end_date: endDate.value || null,

@@ -1,8 +1,8 @@
 import AdminDashboard from "../views/Admin/AdminDashboard.vue";
 import AdminHome from "../views/Admin/AdminHome.vue";
-import ActiveCrops from "../components/ActiveCrops.vue";
+import FarmingProgress from "../views/Admin/FarmingProgress.vue";
 import LatestBlogs from "../components/LatestBlogs.vue";
-import FarmProgress from "../views/Admin/FarmProgress.vue";
+import FarmProgressDetails from "../views/Admin/FarmProgressDetails.vue";
 
 export default [
     {
@@ -11,21 +11,19 @@ export default [
         meta: { requiresAuth: true },
         children: [
             {
-                path: '', // 👈 this means /admin will load AdminHome.vue
+                path: '', //  this means /admin will load AdminHome.vue
                 component: AdminHome
             },
             {
                 path: 'farm-progress',
-                name: 'ActiveCrops',
-                component: ActiveCrops
+                component: FarmingProgress
             },
             {
                 path: 'farm-progress/:id',
-                component: FarmProgress
+                component: FarmProgressDetails
             },
             {
                 path: 'blogs',
-                name: 'blogs',
                 component: LatestBlogs
             }
         ]

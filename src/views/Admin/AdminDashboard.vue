@@ -20,41 +20,36 @@ onMounted(() => {
           </li>
 
           <li class="nav-item mb-2"  data-bs-dismiss="offcanvas">
-            <router-link class="nav-link text-white"  to="/admin/farm-progress">Farm Progress</router-link>
+            <router-link class="nav-link text-white"  to="/admin/farm-progress">Farming Season</router-link>
           </li>
           <li class="nav-item mb-2"  data-bs-dismiss="offcanvas">
-            <router-link class="nav-link text-white"  to="/admin/bookings">Bookings</router-link>
+            <router-link class="nav-link text-white"  to="/admin/crops-seasons">Crop Seasons</router-link>
           </li>
           <li class="nav-item mb-2"  data-bs-dismiss="offcanvas">
-            <router-link class="nav-link text-white"  to="/admin/crops">Crops</router-link>
+            <router-link class="nav-link text-white"  to="/admin/blogs">Blogs</router-link>
           </li>
-          <li class="nav-item mb-2"  data-bs-dismiss="offcanvas">
-            <router-link class="nav-link text-white"  to="/admin/seedlings">Seedlings</router-link>
-          </li>
-        </ul>
-      </div>
+
+        </ul>      </div>
     </div>
 
     <!-- Static Sidebar for Desktop -->
     <nav class="d-none d-md-block bg-success text-white p-3 vh-100" style="width: 250px;">
       <h4 class="fw-bold mb-4">🌱 China Farm</h4>
       <ul class="nav flex-column">
-        <li class="nav-item mb-2">
-          <router-link class="nav-link text-white" to="/admin">Home</router-link>
+        <li class="nav-item mb-2"  data-bs-dismiss="offcanvas">
+          <router-link class="nav-link text-white"  to="/admin">Home</router-link>
         </li>
 
-        <li class="nav-item mb-2">
-          <router-link class="nav-link text-white" to="/admin/farm-progress">Farm Progress</router-link>
+        <li class="nav-item mb-2"  data-bs-dismiss="offcanvas">
+          <router-link class="nav-link text-white"  to="/admin/farm-progress">Farming Season</router-link>
         </li>
-        <li class="nav-item mb-2">
-          <router-link class="nav-link text-white" to="/admin/blogs">Blogs</router-link>
+        <li class="nav-item mb-2"  data-bs-dismiss="offcanvas">
+          <router-link class="nav-link text-white"  to="/admin/crops-seasons">Crop Seasons</router-link>
         </li>
-        <li class="nav-item mb-2">
-          <router-link class="nav-link text-white" to="/admin/crops">Crops</router-link>
+        <li class="nav-item mb-2"  data-bs-dismiss="offcanvas">
+          <router-link class="nav-link text-white"  to="/admin/blogs">Blogs</router-link>
         </li>
-        <li class="nav-item mb-2">
-          <router-link class="nav-link text-white" to="/admin/seedlings">Seedlings</router-link>
-        </li>
+
       </ul>
     </nav>
 
