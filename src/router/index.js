@@ -6,6 +6,7 @@ import adminRoutes from './adminRoutes';
 import userRoutes from './userRoutes';
 import auth from './auth.js';
 import guestRoutes from "./guestRoutes.js";
+import api from "../composables/axios.js";
 
 const routes = [
     ...userRoutes,
@@ -30,15 +31,11 @@ router.beforeEach(async (to, from, next) => {
         const token = localStorage.getItem('token')
 
         if (!token) {
-            return next({ name: 'login' })
+            return next('/login')
         }
 
         try {
-            const response = await axios.get('http://127.0.0.1:8000/api/user', {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
+            const response = await api.get('user');
 
             if (response.status === 200) {
                 next()

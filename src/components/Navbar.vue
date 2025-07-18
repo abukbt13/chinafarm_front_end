@@ -6,10 +6,6 @@ import api from "../composables/axios.js";
 import {auth} from "../composables/auth.js";
 const isCollapsed = ref(true)
 const {user,isLoggedIn,AuthUser} =auth()
-onMounted(() => {
-  const token = localStorage.getItem('token')
-  isLoggedIn.value = !!token
-})
 
 const toggleNav = () => {
   isCollapsed.value = !isCollapsed.value
@@ -38,6 +34,8 @@ const toggleNav = () => {
   }
 }
 onMounted(()=>{
+  const token = localStorage.getItem('token')
+  isLoggedIn.value = !!token
   AuthUser()
 })
 </script>
