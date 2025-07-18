@@ -9,6 +9,7 @@ const props = defineProps({
 })
 const milestones = ref([])
 const newMilestone = ref({
+  activity: '',
   date: '',
   description: '',
   pictures: []
@@ -36,6 +37,7 @@ const fetchFarmingPlant = async () => {
 
 const submitMilestone = async () => {
   const formData = new FormData()
+  formData.append('activity', newMilestone.value.activity)
   formData.append('date', newMilestone.value.date)
   formData.append('description', newMilestone.value.description)
   newMilestone.value.pictures.forEach(file => {
@@ -81,6 +83,11 @@ onMounted( () => {
               class="img-thumbnail me-2"
               style="max-width: 150px;"
           />
+          <div class=""  v-for="im in milestone.pictures">
+            <ul>
+              <li>{{ im }}</li>
+            </ul>
+          </div>
         </div>
         <h4>Date</h4>
         <strong>{{ milestone.date }}</strong>
@@ -98,8 +105,8 @@ onMounted( () => {
             </div>
             <div class="modal-body">
               <div class="mb-3">
-                <label class="form-label">Date</label>
-                <input v-model="newMilestone.date" type="date" class="form-control" required />
+                <label class="form-label">Activity</label>
+                <input v-model="newMilestone.activity" type="text" placeholder="enter activity like Weeding" class="form-control" required />
               </div>
               <div class="mb-3">
                 <label class="form-label">Description</label>
@@ -108,6 +115,10 @@ onMounted( () => {
               <div class="mb-3">
                 <label class="form-label">Pictures</label>
                 <input type="file" class="form-control" multiple @change="e => newMilestone.pictures = Array.from(e.target.files)" />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Date</label>
+                <input v-model="newMilestone.date" type="date" class="form-control" required />
               </div>
               <button type="submit" class="btn btn-success">Save Milestone</button>
             </div>
