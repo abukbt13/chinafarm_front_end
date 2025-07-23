@@ -5,6 +5,7 @@
   import {ref} from "vue";
   import ProgressTab from "./Components/ProgressTab.vue";
   import ExpenseTab from "./Components/ExpenseTab.vue";
+  import ReturnsTab from "./Components/ReturnsTab.vue";
   const route = useRoute()
   const seasonId = ref(route.params.id)
 </script>
@@ -44,7 +45,7 @@
 
 <!--    Returns tab-->
     <div class="tab-pane fade p-3" id="returns-tab-pane" role="tabpanel" aria-labelledby="returns-tab" tabindex="0">
-      <h2>Returns tab</h2>
+      <ReturnsTab :season-id="seasonId" />
     </div>
   </div>
 

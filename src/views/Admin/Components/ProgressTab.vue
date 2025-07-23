@@ -74,21 +74,16 @@ onMounted( () => {
       <li v-for="milestone in milestones" :key="milestone.id" class="list-group-item">
         <h2>Description</h2>
         <p>{{ milestone.description }}</p>
-        <div class="mt-2">
-          <img
-              v-for="pic in milestone.pictures"
-              :src="storage_url + pic"
-              :key="pic"
-              :alt="pic"
-              class="img-thumbnail me-2"
-              style="max-width: 150px;"
-          />
-          <div class=""  v-for="im in milestone.pictures">
-            <ul>
-              <li>{{ im }}</li>
-            </ul>
+        <div class="mt-2 row row-cols-1 row-cols-lg-2 g-2">
+          <div v-for="pic in milestone.pictures" :key="pic" class="col">
+            <img
+                :src="storage_url + pic"
+                :alt="pic"
+                class="img-thumbnail w-100"
+            />
           </div>
         </div>
+
         <h4>Date</h4>
         <strong>{{ milestone.date }}</strong>
       </li>

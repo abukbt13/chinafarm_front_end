@@ -10,16 +10,17 @@ const props = defineProps({
 })
 
 const expenses = ref([])
-const newExpense = ref({ name: '', description: '', date: '' })
+const newExpense = ref({ name: '', description: '', date: '' ,amount:''})
 const editExpense = ref(null)
 const loading = ref(true)
+
 
 // Fetch all expenses
 const fetchExpenses = async () => {
   try {
     const res = await api.get(`expenses/${props.seasonId}`)
     expenses.value = res.data.expenses
-    console.log(res)
+    // console.log(res)
   } catch (err) {
     console.error(err)
   } finally {
@@ -30,8 +31,8 @@ const fetchExpenses = async () => {
 // Create
 const submitExpense = async () => {
   try {
-    await api.post('expenses', { ...newExpense.value, farming_progress_id: props.seasonId })
-    newExpense.value = { name: '', description: '', date: '' }
+    await api.post('expenses/' + props.seasonId, { ...newExpense.value, farming_progress_id: props.seasonId })
+    newExpense.value = { name: '', description: '', date: '' ,amount: ''}
     await fetchExpenses()
   } catch (err) {
     console.error(err)
@@ -46,7 +47,7 @@ const startEdit = (expense) => {
 // Update
 const updateExpense = async () => {
   try {
-    await api.put(`expenses/${editExpense.value.id}`, editExpense.value)
+    await api.post('expenses/'+props.seasonId+'/'+editExpense.value.id, editExpense.value)
     editExpense.value = null
     await fetchExpenses()
   } catch (err) {
@@ -75,23 +76,75 @@ onMounted(() => {
   <div class="p-3">
     <h4 class="mb-4">Expenses</h4>
     <!-- New Expense Form -->
-    <form @submit.prevent="submitExpense" class="mb-4">
-      <div class="row g-2">
-        <div class="col-md-3">
-          <input v-model="newExpense.name" type="text" class="form-control" placeholder="Name" required>
-        </div>
-        <div class="col-md-4">
-          <input v-model="newExpense.description" type="text" class="form-control" placeholder="Description">
-        </div>
-        <div class="col-md-3">
-          <input v-model="newExpense.date" type="date" class="form-control" required>
-        </div>
-        <div class="col-md-2">
-          <button type="submit" class="btn btn-success w-100">Add</button>
+    <div class="modal fade" id="expense" tabindex="-1" aria-labelledby="expense" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="expense">New Expense</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form @submit.prevent="submitExpense" class="mb-4">
+              <!-- Name -->
+              <div class="mb-3">
+                <label for="expenseName" class="form-label">Expense Name</label>
+                <input
+                    v-model="newExpense.name"
+                    type="text"
+                    class="form-control"
+                    id="expenseName"
+                    placeholder="e.g. Seeds, Fertilizer"
+                    required
+                >
+              </div>
+
+              <!-- Description -->
+              <div class="mb-3">
+                <label for="expenseDescription" class="form-label">Description (optional)</label>
+                <input
+                    v-model="newExpense.description"
+                    type="text"
+                    class="form-control"
+                    id="expenseDescription"
+                    placeholder="Short description"
+                >
+              </div>
+
+              <!-- Amount -->
+              <div class="mb-3">
+                <label for="expenseAmount" class="form-label">Amount (KES)</label>
+                <input
+                    v-model="newExpense.amount"
+                    type="number"
+                    class="form-control"
+                    id="expenseAmount"
+                    placeholder="Enter amount spent"
+                    min="0"
+                    step="any"
+                    required
+                >
+              </div>
+
+              <!-- Date -->
+              <div class="mb-3">
+                <label for="expenseDate" class="form-label">Date</label>
+                <input
+                    v-model="newExpense.date"
+                    type="date"
+                    class="form-control"
+                    id="expenseDate"
+                    required
+                >
+                <div class="form-text">Pick the date this expense occurred.</div>
+              </div>
+
+              <!-- Submit Button -->
+              <button type="submit" class="btn btn-success w-100">Add Expense</button>
+            </form>
+          </div>
         </div>
       </div>
-    </form>
-
+    </div>
     <!-- Loading -->
     <div v-if="loading" class="text-muted">Loading expenses...</div>
 
@@ -100,8 +153,12 @@ onMounted(() => {
       <table class="table table-bordered table-striped">
         <thead class="table-light">
         <tr>
+          <th colspan="4"> <h4>Expense View<button class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#expense">Add Expense</button>  </h4> </th>
+        </tr>
+        <tr>
           <th>Name</th>
           <th>Description</th>
+          <th>Amount</th>
           <th>Date</th>
           <th style="width: 150px;">Actions</th>
         </tr>
@@ -113,6 +170,9 @@ onMounted(() => {
 
           <td v-if="editExpense?.id !== expense.id">{{ expense.description }}</td>
           <td v-else><input v-model="editExpense.description" class="form-control" /></td>
+
+          <td v-if="editExpense?.id !== expense.id">{{ expense.amount }}</td>
+          <td v-else><input v-model="editExpense.amount" class="form-control" /></td>
 
           <td v-if="editExpense?.id !== expense.id">{{ expense.date }}</td>
           <td v-else><input v-model="editExpense.date" type="date" class="form-control" /></td>

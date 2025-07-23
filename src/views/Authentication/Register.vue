@@ -27,12 +27,8 @@ const submit = async () => {
       timer: 1500,
       showConfirmButton: false,
     });
-    if(res.data.user.role === 'admin'){
       await router.push('/admin')
-    }
-    else {
-      await router.push('/guest')
-    }
+
   } catch (error) {
     Swal.fire({
       icon: 'error',
