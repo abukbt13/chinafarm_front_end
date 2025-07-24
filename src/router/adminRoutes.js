@@ -3,6 +3,7 @@ import AdminHome from "../views/Admin/AdminHome.vue";
 import FarmingProgress from "../views/Admin/FarmingProgress.vue";
 import LatestBlogs from "../components/LatestBlogs.vue";
 import FarmProgressDetails from "../views/Admin/FarmProgressDetails.vue";
+import CropSeasons from "../views/Admin/CropSeasons.vue";
 
 export default [
     {
@@ -21,6 +22,10 @@ export default [
             {
                 path: 'farm-progress/:id',
                 component: FarmProgressDetails
+            },
+            {
+                path: 'crops-seasons',
+                component: CropSeasons
             },
             {
                 path: 'blogs',

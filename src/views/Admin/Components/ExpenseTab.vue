@@ -47,7 +47,7 @@ const startEdit = (expense) => {
 // Update
 const updateExpense = async () => {
   try {
-    await api.post('expenses/'+props.seasonId+'/'+editExpense.value.id, editExpense.value)
+    await api.post('expenses/update/'+props.seasonId+'/'+editExpense.value.id, editExpense.value)
     editExpense.value = null
     await fetchExpenses()
   } catch (err) {
@@ -59,7 +59,7 @@ const updateExpense = async () => {
 const deleteExpense = async (id) => {
   if (confirm('Are you sure you want to delete this expense?')) {
     try {
-      await api.delete(`expenses/${id}`)
+      await api.delete('expenses/delete/'+props.seasonId +'/'+ id)
       await fetchExpenses()
     } catch (err) {
       console.error(err)
@@ -74,7 +74,6 @@ onMounted(() => {
 
 <template>
   <div class="p-3">
-    <h4 class="mb-4">Expenses</h4>
     <!-- New Expense Form -->
     <div class="modal fade" id="expense" tabindex="-1" aria-labelledby="expense" aria-hidden="true">
       <div class="modal-dialog">
@@ -153,17 +152,18 @@ onMounted(() => {
       <table class="table table-bordered table-striped">
         <thead class="table-light">
         <tr>
-          <th colspan="4"> <h4>Expense View<button class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#expense">Add Expense</button>  </h4> </th>
+          <th colspan="5"> <h4>Expense View<button class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#expense">Add Expense</button>  </h4> </th>
         </tr>
-        <tr>
-          <th>Name</th>
-          <th>Description</th>
-          <th>Amount</th>
-          <th>Date</th>
-          <th style="width: 150px;">Actions</th>
-        </tr>
+
         </thead>
         <tbody>
+        <tr>
+          <td>Name</td>
+          <td>Description</td>
+          <td>Amount</td>
+          <td>Date</td>
+          <td style="width: 150px;">Actions</td>
+        </tr>
         <tr v-for="expense in expenses" :key="expense.id">
           <td v-if="editExpense?.id !== expense.id">{{ expense.name }}</td>
           <td v-else><input v-model="editExpense.name" class="form-control" /></td>

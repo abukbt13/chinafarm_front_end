@@ -16,8 +16,8 @@ const loading = ref(true)
 
 const fetchReturns = async () => {
   try {
-    const res = await api.get(`returns/${props.seasonId}`)
-    returnItems.value = res.data.returns
+    const res = await api.get(`crop_returns/${props.seasonId}`)
+    returnItems.value = res.data.CropReturns
   } catch (err) {
     console.error(err)
   } finally {
@@ -27,7 +27,7 @@ const fetchReturns = async () => {
 
 const submitReturn = async () => {
   try {
-    await api.post('returns/' + props.seasonId, { ...newReturn.value, farming_progress_id: props.seasonId })
+    await api.post('crop_returns/' + props.seasonId, { ...newReturn.value, farming_progress_id: props.seasonId })
     newReturn.value = { name: '', description: '', date: '' ,amount: '' }
     await fetchReturns()
   } catch (err) {
@@ -41,7 +41,7 @@ const startEdit = (item) => {
 
 const updateReturn = async () => {
   try {
-    await api.post('returns/' + props.seasonId + '/' + editReturn.value.id, editReturn.value)
+    await api.post('crop_returns/update/' + props.seasonId + '/' + editReturn.value.id, editReturn.value)
     editReturn.value = null
     await fetchReturns()
   } catch (err) {
@@ -52,7 +52,7 @@ const updateReturn = async () => {
 const deleteReturn = async (id) => {
   if (confirm('Are you sure you want to delete this return item?')) {
     try {
-      await api.delete(`returns/${id}`)
+      await api.delete('crop_returns/delete/'+props.seasonId +'/' +id)
       await fetchReturns()
     } catch (err) {
       console.error(err)
@@ -67,7 +67,10 @@ onMounted(() => {
 
 <template>
   <div class="p-3">
-    <h4 class="mb-4">Returns</h4>
+    <h4 class="my-4">
+      Crop returns
+      <button class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#return">Add Return</button>
+    </h4>
 
     <!-- New Return Modal -->
     <div class="modal fade" id="return" tabindex="-1" aria-labelledby="return" aria-hidden="true">
@@ -142,14 +145,7 @@ onMounted(() => {
     <div v-else>
       <table class="table table-bordered table-striped">
         <thead class="table-light">
-        <tr>
-          <th colspan="4">
-            <h4>
-              Return View
-              <button class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#return">Add Return</button>
-            </h4>
-          </th>
-        </tr>
+
         <tr>
           <th>Name</th>
           <th>Description</th>
