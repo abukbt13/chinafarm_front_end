@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import api from "../../../composables/axios.js";
+import Swal from 'sweetalert2'
 import {storage_link} from "../../../composables/storage_link.js";
 const { storage_url } = storage_link()
 
@@ -8,18 +9,13 @@ const props = defineProps({
   seasonId: [String, Number]
 })
 const milestones = ref([])
+const pictures = ref([])
+const activity = ref('')
+const date = ref('')
+const description = ref('')
+const isEditing = ref(false)
+const currentPictures = ref([])
 
-const newMilestone = ref({
-  activity: '',
-  date: '',
-  description: '',
-  pictures: [],
-  isEditing: false
-})
-const EditPost = (data) =>{
-  newMilestone.value =data
-  newMilestone.value.isEditing = true
-}
 
 
 const fetchMilestones = async () => {
@@ -37,35 +33,82 @@ function handleFileChange(event) {
   const files = Array.from(event.target.files)
 
   files.forEach(file => {
-    newMilestone.value.pictures.push(file)
+    pictures.value.push(file)
     previewImages.value.push(URL.createObjectURL(file))
   })
 }
 
 function removeImage(index) {
-  newMilestone.value.pictures.splice(index, 1)
+  pictures.value.splice(index, 1)
   previewImages.value.splice(index, 1)
 }
+const fileInput = ref(null)
+function clearForm(){
+  isEditing.value= false
+  activity.value=''
+  date.value =''
+  description.value=''
+  // Clear file input
+  if (fileInput.value) {
+    fileInput.value.value = '' // This resets the file input
+  }
+  pictures.value = null
+  previewImages.value= null
+}
+
+const EditPost = (data) =>{
+  isEditing.value=true
+  activity.value = data.activity
+  description.value = data.description
+  date.value = data.date
+  currentPictures.value = data.pictures
+}
+
+const DeleteMilestone = async (data) => {
+  Swal.fire({
+    title: 'Are you sure?',
+    text: 'This milestone will be permanently deleted!',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!'
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      try {
+        await api.post(`/milestone/delete/${data}`)
+        await fetchMilestones()
+
+        Swal.fire(
+            'Deleted!',
+            'The milestone has been deleted.',
+            'success'
+        )
+      } catch (error) {
+        Swal.fire(
+            'Error!',
+            'Something went wrong while deleting the milestone.',
+            'error'
+        )
+      }
+    }
+  })
+}
+
+
 const submitMilestone = async () => {
   const formData = new FormData()
-  formData.append('activity', newMilestone.value.activity)
-  formData.append('date', newMilestone.value.date)
-  formData.append('description', newMilestone.value.description)
-  newMilestone.value.pictures.forEach(file => {
+  formData.append('activity', activity.value)
+  formData.append('date', date.value)
+  formData.append('description', description.value)
+  pictures.value.forEach(file => {
     formData.append('pictures[]', file)
   })
 
   try {
     await api.post(`/milestone/${props.seasonId}`, formData)
     await fetchMilestones()
-    document.getElementById('closeModalBtn')?.click()
-    newMilestone.value = {
-      activity: '',
-      date: '',
-      description: '',
-      pictures: [],
-      isEditing: false
-    }
+   clearForm()
   } catch (err) {
     console.error('Error submitting milestone:', err)
   }
@@ -79,7 +122,7 @@ onMounted( () => {
   <div>
     <div class="d-flex justify-content-between align-items-center mb-3">
       <h4>Progress Milestones</h4>
-      <button  @click="newMilestone.isEditing = false" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addMilestoneModal">
+      <button  @click="clearForm()"  class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addMilestoneModal">
         Add Milestone
       </button>
     </div>
@@ -111,7 +154,7 @@ onMounted( () => {
                  </span>
                 </li>
                 <li>
-                 <span @click="DeletePost"  class="dropdown-item d-flex align-items-center text-danger">
+                 <span @click="DeleteMilestone(milestone.id)"  class="dropdown-item d-flex align-items-center text-danger">
                    <i class="bi bi-trash3 me-2"></i> Delete Post
                  </span>
                 </li>
@@ -140,23 +183,24 @@ onMounted( () => {
         <div class="modal-content">
           <form @submit.prevent="submitMilestone">
             <div class="modal-header">
-              <h5 class="modal-title">{{ newMilestone.isEditing ? "Editing Milestone " : "New Milestone"}}</h5>
+              <h5 class="modal-title">{{ isEditing.value ? "Editing Milestone " : "New Milestone"}}</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" id="closeModalBtn" />
             </div>
             <div class="modal-body">
               <div class="mb-3">
                 <label class="form-label">Activity</label>
-                <input v-model="newMilestone.activity" type="text" placeholder="enter activity like Weeding" class="form-control" required />
+                <input v-model="activity" type="text" placeholder="enter activity like Weeding" class="form-control" required />
               </div>
               <div class="mb-3">
                 <label class="form-label">Description</label>
-                <textarea v-model="newMilestone.description" class="form-control" rows="3" required />
+                <textarea v-model="description" class="form-control" rows="3" required />
               </div>
               <div class="mb-3">
                 <label class="form-label">Pictures</label>
                 <input
                     type="file"
                     multiple
+                    ref="fileInput"
                     accept="image/*"
                     @change="handleFileChange"
                     class="form-control mb-3"
@@ -189,13 +233,24 @@ onMounted( () => {
                     </button>
                   </div>
                 </div>
+               <div class="" v-if="isEditing">
+                 <p>current Pictures</p>
+                 <div v-for="pic in currentPictures" :key="pic" class="col">
+                   <img
+                       style=" height: 200;"
+                       :src="storage_url + pic"
+                       :alt="pic"
+                       class="img-thumbnail"
+                   />
+                 </div>
+               </div>
               </div>
               <div class="mb-3">
                 <label class="form-label">Date</label>
-                <input v-model="newMilestone.date" type="date" class="form-control" required />
+                <input v-model="date" type="date" class="form-control" required />
               </div>
               <button type="submit" class="btn btn-success">
-                {{ newMilestone.isEditing ? 'Edit Milestone' : 'Add Milestone' }}
+                {{ isEditing ? 'Edit Milestone' : 'Add Milestone' }}
               </button>
             </div>
           </form>
