@@ -15,6 +15,7 @@ const date = ref('')
 const description = ref('')
 const isEditing = ref(false)
 const currentPictures = ref([])
+const editId = ref(null)
 
 
 
@@ -47,16 +48,18 @@ function clearForm(){
   isEditing.value= false
   activity.value=''
   date.value =''
+  editId.value = null
   description.value=''
   // Clear file input
   if (fileInput.value) {
     fileInput.value.value = '' // This resets the file input
   }
-  pictures.value = null
-  previewImages.value= null
+  pictures.value = []
+  previewImages.value= []
 }
 
 const EditPost = (data) =>{
+  editId.value = data.id
   isEditing.value=true
   activity.value = data.activity
   description.value = data.description
@@ -101,16 +104,37 @@ const submitMilestone = async () => {
   formData.append('activity', activity.value)
   formData.append('date', date.value)
   formData.append('description', description.value)
+
+  // append new pictures (uploaded during editing)
   pictures.value.forEach(file => {
     formData.append('pictures[]', file)
   })
 
+  // append current pictures (to keep them in DB if not deleted)
+  currentPictures.value.forEach(pic => {
+    formData.append('current_pictures[]', pic)
+  })
+
   try {
-    await api.post(`/milestone/${props.seasonId}`, formData)
+    if (isEditing.value) {
+      // Editing existing milestone
+      await api.post(`/milestone/update/${editId.value}`, formData)
+    } else {
+      // Creating new milestone
+      await api.post(`/milestone/${props.seasonId}`, formData)
+    }
+
     await fetchMilestones()
-   clearForm()
+    clearForm()
+
+    Swal.fire(
+        'Success!',
+        isEditing.value ? 'Milestone updated successfully!' : 'Milestone created successfully!',
+        'success'
+    )
   } catch (err) {
     console.error('Error submitting milestone:', err)
+    Swal.fire('Error!', 'Something went wrong.', 'error')
   }
 }
 onMounted( () => {
@@ -183,7 +207,7 @@ onMounted( () => {
         <div class="modal-content">
           <form @submit.prevent="submitMilestone">
             <div class="modal-header">
-              <h5 class="modal-title">{{ isEditing.value ? "Editing Milestone " : "New Milestone"}}</h5>
+              <h5 class="modal-title">{{ isEditing ? "Editing Milestone " : "New Milestone"}}</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" id="closeModalBtn" />
             </div>
             <div class="modal-body">
@@ -233,17 +257,21 @@ onMounted( () => {
                     </button>
                   </div>
                 </div>
+
                <div class="" v-if="isEditing">
-                 <p>current Pictures</p>
-                 <div v-for="pic in currentPictures" :key="pic" class="col">
+                 <h2 class="text-center">Uploaded Pictures</h2>
+                 <div class="" style="display: flex;flex-direction: row;">
+                    <div  v-for="pic in currentPictures" :key="pic" class="col">
                    <img
-                       style=" height: 200;"
+                       style=" width: 200px; height: 200px;"
                        :src="storage_url + pic"
                        :alt="pic"
                        class="img-thumbnail"
                    />
                  </div>
+                 </div>
                </div>
+
               </div>
               <div class="mb-3">
                 <label class="form-label">Date</label>
