@@ -1,8 +1,9 @@
-import Profile from "../views/Client/Profile.vue";
+import Profile from "../views/user/Profile.vue";
 
 export default [
     {
-        path: '/profile',
-        component:Profile
-    },
-]
+        path: '/user/profile',
+        name:'profile',
+        component: Profile
+    }
+    ]

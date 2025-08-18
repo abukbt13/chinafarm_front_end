@@ -5,13 +5,11 @@ import axios from 'axios'
 import adminRoutes from './adminRoutes';
 import userRoutes from './userRoutes';
 import auth from './auth.js';
-import guestRoutes from "./guestRoutes.js";
 import api from "../composables/axios.js";
 
 const routes = [
     ...userRoutes,
     ...adminRoutes,
-    ...guestRoutes,
     ...auth,
     {
         path: '/',

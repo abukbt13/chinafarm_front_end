@@ -57,8 +57,7 @@ onMounted(()=>{
         <ul>
           <li><router-link to="/">Home</router-link></li>
           <li><router-link to="/crops">Crops</router-link></li>
-          <li><router-link to="/education">Education</router-link></li>
-          <li><router-link to="/videos">Videos</router-link></li>
+          <li><router-link to="/blogs">Blogs</router-link></li>
           <li><router-link to="/contact">Contact</router-link></li>
         </ul>
 
@@ -70,7 +69,8 @@ onMounted(()=>{
               <i class="bi bi-person-circle fs-4"></i>
               <div class="dropdown">
                 <router-link to="/admin" v-if="user.role =='admin'">Dashboard</router-link>
-                <router-link to="/admin" v-else>guest</router-link>
+                <router-link to="/admin" v-else>Dashboard</router-link>
+                <router-link to="/user/profile">Profile</router-link>
                 <a @click.prevent="logout" class="dropdown-item" href="#">Logout</a>
               </div>
             </div>
