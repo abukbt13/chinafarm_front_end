@@ -3,7 +3,7 @@ import AdminHome from "../views/Admin/AdminHome.vue";
 import FarmProjects from "../views/Admin/FarmProjects.vue";
 import LatestBlogs from "../components/LatestBlogs.vue";
 import FarmProgressDetails from "../views/Admin/FarmProgressDetails.vue";
-import CropSeasons from "../views/Admin/CropSeasons.vue";
+import PlantingSeasonSuggestion from "../views/Admin/PlantingSeasonSuggestion.vue";
 
 export default [
     {
@@ -25,7 +25,7 @@ export default [
             },
             {
                 path: 'crop-suggestion',
-                component: CropSeasons
+                component: PlantingSeasonSuggestion
             },
             {
                 path: 'blogs',
