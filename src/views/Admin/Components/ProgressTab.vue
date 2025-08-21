@@ -22,7 +22,7 @@ const editId = ref(null)
 const fetchMilestones = async () => {
   try {
     const res = await api.get(`/milestone/show/${props.seasonId}`)
-    milestones.value = res.data.milestones
+    milestones.value = res.data.milestone
   } catch (err) {
     console.error('Failed to fetch milestones:', err)
   }

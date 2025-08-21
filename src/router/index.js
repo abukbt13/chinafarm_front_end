@@ -6,6 +6,7 @@ import adminRoutes from './adminRoutes';
 import userRoutes from './userRoutes';
 import auth from './auth.js';
 import api from "../composables/axios.js";
+import LatestBlogs from "../components/LatestBlogs.vue";
 
 const routes = [
     ...userRoutes,
@@ -16,6 +17,7 @@ const routes = [
         name: 'Home',
         component: Home,
     },
+
 
 ];
 

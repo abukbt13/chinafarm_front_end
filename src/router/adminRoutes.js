@@ -1,6 +1,6 @@
 import AdminDashboard from "../views/Admin/AdminDashboard.vue";
 import AdminHome from "../views/Admin/AdminHome.vue";
-import FarmingProgress from "../views/Admin/FarmingProgress.vue";
+import FarmProjects from "../views/Admin/FarmProjects.vue";
 import LatestBlogs from "../components/LatestBlogs.vue";
 import FarmProgressDetails from "../views/Admin/FarmProgressDetails.vue";
 import CropSeasons from "../views/Admin/CropSeasons.vue";
@@ -16,15 +16,15 @@ export default [
                 component: AdminHome
             },
             {
-                path: 'farm-progress',
-                component: FarmingProgress
+                path: 'farm-projects',
+                component: FarmProjects
             },
             {
-                path: 'farm-progress/:id',
+                path: 'project-progress/:id',
                 component: FarmProgressDetails
             },
             {
-                path: 'crops-seasons',
+                path: 'crop-suggestion',
                 component: CropSeasons
             },
             {

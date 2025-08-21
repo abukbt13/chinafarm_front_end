@@ -18,18 +18,17 @@ onMounted(() => {
           <li class="nav-item mb-2"  data-bs-dismiss="offcanvas">
             <router-link class="nav-link text-white"  to="/admin">Home</router-link>
           </li>
-
           <li class="nav-item mb-2"  data-bs-dismiss="offcanvas">
-            <router-link class="nav-link text-white"  to="/admin/farm-progress">Farming Season</router-link>
+            <router-link class="nav-link text-white"  to="/admin/farm-projects">Farm Projects</router-link>
           </li>
           <li class="nav-item mb-2"  data-bs-dismiss="offcanvas">
-            <router-link class="nav-link text-white"  to="/admin/crops-seasons">Crop Seasons</router-link>
+            <router-link class="nav-link text-white"  to="/admin/crop-suggestion">Crop Suggestions</router-link>
           </li>
           <li class="nav-item mb-2"  data-bs-dismiss="offcanvas">
-            <router-link class="nav-link text-white"  to="/admin/blogs">Blogs</router-link>
+            <router-link class="nav-link text-white"  to="/admin/blogs">My Blogs</router-link>
           </li>
-
-        </ul>      </div>
+        </ul>
+      </div>
     </div>
 
     <!-- Static Sidebar for Desktop -->
@@ -38,17 +37,15 @@ onMounted(() => {
         <li class="nav-item mb-2"  data-bs-dismiss="offcanvas">
           <router-link class="nav-link text-white"  to="/admin">Home</router-link>
         </li>
-
         <li class="nav-item mb-2"  data-bs-dismiss="offcanvas">
-          <router-link class="nav-link text-white"  to="/admin/farm-progress">Farming Season</router-link>
+          <router-link class="nav-link text-white"  to="/admin/farm-projects">Farm Projects</router-link>
         </li>
         <li class="nav-item mb-2"  data-bs-dismiss="offcanvas">
-          <router-link class="nav-link text-white"  to="/admin/crops-seasons">Crop Seasons</router-link>
+          <router-link class="nav-link text-white"  to="/admin/crop-suggestion">Crop Suggestions</router-link>
         </li>
         <li class="nav-item mb-2"  data-bs-dismiss="offcanvas">
-          <router-link class="nav-link text-white"  to="/admin/blogs">Blogs</router-link>
+          <router-link class="nav-link text-white"  to="/admin/blogs">My Blogs</router-link>
         </li>
-
       </ul>
     </nav>
 

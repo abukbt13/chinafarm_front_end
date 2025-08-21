@@ -28,7 +28,7 @@ const formatDate = (dateStr) => {
 
 const FetchFarmingProgress =async ()=>{
   try {
-    const res = await api.get('farming-progress') // Adjust the endpoint if needed
+    const res = await api.get('farming-projects') // Adjust the endpoint if needed
     plans.value = res.data.crops // Laravel API Resource format
 
   } catch (err) {
@@ -40,7 +40,7 @@ const saveCrop = async () => {
   success.value = false
 
   try {
-    const response = await api.post('farming-progress', {
+    const response = await api.post('farming-projects', {
       crop: crop.value,
       start_date: startDate.value,
       end_date: endDate.value || null,
@@ -75,15 +75,15 @@ onMounted(() => {
 <template>
   <div>
     <div class="d-flex justify-content-between align-items-center mb-4">
-      <h3 class="fw-bold">🌾 Active Crops</h3>
-      <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
-        ➕ Add Planting Plan
+      <h3 class="fw-bold">🌾 My Farm Projects</h3>
+      <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        ➕ New Project
       </button>
     </div>
 
     <div class="row row-cols-1 row-cols-md-3 g-4">
       <div class="col" v-for="item in plans" :key="item">
-        <router-link cla :to="'/admin/farm-progress/' + item.id"  class="card text-decoration-none bg-pr shadow-sm h-100">
+        <router-link cla :to="'/admin/project-progress/' + item.id"  class="card text-decoration-none bg-pr shadow-sm h-100">
           <div class="card-body">
             <h5 class="card-title">{{ item.crop }}</h5>
               <p>{{item.description}}</p>

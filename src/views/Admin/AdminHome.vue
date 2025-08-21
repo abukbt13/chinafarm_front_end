@@ -5,7 +5,7 @@ import api from "../../composables/axios.js";
 const summary =ref([])
 const fetchSummary = async () => {
   try {
-    const res = await api.get('farming-progress/count')
+    const res = await api.get('farming-projects/count')
     summary.value = res.data.projects
   } catch (err) {
     console.error('Failed to fetch summary:', err)
@@ -27,9 +27,9 @@ onMounted( () => {
               <p class="display-6 fw-semibold text-dark mb-2">
                 {{ summary }}
               </p>
-              <a href="/admin/farm-progress" class="btn btn-outline-primary btn-sm">
+              <router-link to="/admin/farm-projects" class="btn btn-outline-primary btn-sm">
                 View Crops
-              </a>
+              </router-link>
             </div>
           </div>
         </div>
@@ -42,9 +42,9 @@ onMounted( () => {
               <p class="display-6 fw-semibold text-dark mb-2">
                 {{ summary }}
               </p>
-              <a href="/admin/blogs" class="btn btn-outline-success btn-sm">
+              <router-link to="/admin/blogs" class="btn btn-outline-success btn-sm">
                 View Blogs
-              </a>
+              </router-link>
             </div>
           </div>
         </div>
@@ -57,9 +57,9 @@ onMounted( () => {
               <p class="display-6 fw-semibold text-dark mb-2">
                 {{ summary }}
               </p>
-              <a href="/admin/crops-seasons" class="btn btn-outline-warning btn-sm">
+              <router-link to="/admin/planting-season" class="btn btn-outline-warning btn-sm">
                 View Suggestions
-              </a>
+              </router-link>
             </div>
           </div>
         </div>

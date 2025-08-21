@@ -15,7 +15,7 @@ const error = ref(null)
 
 const fetchFarmingSeason = async () => {
   try {
-    const res = await api.get(`/farming-progress/${props.season_id}`)
+    const res = await api.get(`/farming-projects/${props.season_id}`)
     farmingprogress.value = res.data.farming_progress
   } catch (err) {
     console.error(err)

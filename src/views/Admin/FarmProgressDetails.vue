@@ -11,7 +11,7 @@
 </script>
 
 <template>
-  <router-link class="text-decoration-none mb-4" to="/admin/farm-progress"><i class="bi bi-chevron-left" > Back</i></router-link>
+  <router-link class="text-decoration-none mb-4" to="/admin/farm-projects"><i class="bi bi-chevron-left" > Back</i></router-link>
   <br>
   <br>
   <!-- buttons -->
