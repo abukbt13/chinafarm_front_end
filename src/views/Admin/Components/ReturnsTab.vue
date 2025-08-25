@@ -16,8 +16,8 @@ const loading = ref(true)
 
 const fetchReturns = async () => {
   try {
-    const res = await api.get(`crop_returns/${props.seasonId}`)
-    returnItems.value = res.data.CropReturns
+    const res = await api.get(`project_returns/${props.seasonId}`)
+    returnItems.value = res.data.project_returns
   } catch (err) {
     console.error(err)
   } finally {
@@ -27,7 +27,7 @@ const fetchReturns = async () => {
 
 const submitReturn = async () => {
   try {
-    await api.post('crop_returns/' + props.seasonId, { ...newReturn.value, farming_progress_id: props.seasonId })
+    await api.post('project_returns/' + props.seasonId, { ...newReturn.value, farm_project_id: props.seasonId })
     newReturn.value = { name: '', description: '', date: '' ,amount: '' }
     await fetchReturns()
   } catch (err) {
@@ -41,7 +41,7 @@ const startEdit = (item) => {
 
 const updateReturn = async () => {
   try {
-    await api.post('crop_returns/update/' + props.seasonId + '/' + editReturn.value.id, editReturn.value)
+    await api.post('project_returns/update/' + props.seasonId + '/' + editReturn.value.id, editReturn.value)
     editReturn.value = null
     await fetchReturns()
   } catch (err) {
@@ -52,7 +52,7 @@ const updateReturn = async () => {
 const deleteReturn = async (id) => {
   if (confirm('Are you sure you want to delete this return item?')) {
     try {
-      await api.delete('crop_returns/delete/'+props.seasonId +'/' +id)
+      await api.delete('project_returns/delete/'+props.seasonId +'/' +id)
       await fetchReturns()
     } catch (err) {
       console.error(err)

@@ -19,7 +19,7 @@ const loading = ref(true)
 const fetchExpenses = async () => {
   try {
     const res = await api.get(`expenses/${props.seasonId}`)
-    expenses.value = res.data.expenses
+    expenses.value = res.data.expense
     // console.log(res)
   } catch (err) {
     console.error(err)
@@ -31,7 +31,7 @@ const fetchExpenses = async () => {
 // Create
 const submitExpense = async () => {
   try {
-    await api.post('expenses/' + props.seasonId, { ...newExpense.value, farming_progress_id: props.seasonId })
+    await api.post('expenses/' + props.seasonId, { ...newExpense.value, farm_project_id: props.seasonId })
     newExpense.value = { name: '', description: '', date: '' ,amount: ''}
     await fetchExpenses()
   } catch (err) {
