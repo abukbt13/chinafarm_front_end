@@ -19,10 +19,10 @@ onMounted(() => {
             <router-link class="nav-link text-white"  to="/admin">Home</router-link>
           </li>
           <li class="nav-item mb-2"  data-bs-dismiss="offcanvas">
-            <router-link class="nav-link text-white"  to="/admin/farm-projects">Farm Projects</router-link>
+            <router-link class="nav-link text-white"  to="/admin/farm-projects">My Farm Projects</router-link>
           </li>
           <li class="nav-item mb-2"  data-bs-dismiss="offcanvas">
-            <router-link class="nav-link text-white"  to="/admin/crop-suggestion">Crop Suggestions</router-link>
+            <router-link class="nav-link text-white"  to="/admin/crop-suggestion">My Crop Suggestions</router-link>
           </li>
           <li class="nav-item mb-2"  data-bs-dismiss="offcanvas">
             <router-link class="nav-link text-white"  to="/admin/blogs">My Blogs</router-link>
@@ -38,10 +38,10 @@ onMounted(() => {
           <router-link class="nav-link text-white"  to="/admin">Home</router-link>
         </li>
         <li class="nav-item mb-2"  data-bs-dismiss="offcanvas">
-          <router-link class="nav-link text-white"  to="/admin/farm-projects">Farm Projects</router-link>
+          <router-link class="nav-link text-white"  to="/admin/farm-projects">My Farm Projects</router-link>
         </li>
         <li class="nav-item mb-2"  data-bs-dismiss="offcanvas">
-          <router-link class="nav-link text-white"  to="/admin/crop-suggestion">Crop Suggestions</router-link>
+          <router-link class="nav-link text-white"  to="/admin/crop-suggestion">My Crop Suggestions</router-link>
         </li>
         <li class="nav-item mb-2"  data-bs-dismiss="offcanvas">
           <router-link class="nav-link text-white"  to="/admin/blogs">My Blogs</router-link>

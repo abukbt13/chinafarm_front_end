@@ -6,15 +6,16 @@
     <section class="d-flex flex-wrap align-items-stretch bg-light rounded shadow p-4">
       <!-- Left Column: Text -->
       <div class="col-12 col-md-6 mb-4 mb-md-0 d-flex flex-column justify-content-center">
-        <h1 class="display-5 fw-bold text-success">Welcome to China Farm</h1>
+        <h1 class="display-5 fw-bold text-success">Welcome to China Farm Management System</h1>
         <p class="lead mt-3">
-          We grow vegetables and tree seedlings while educating others to do the same.
-          Explore our farm, learn new methods, and join the movement!
+          Manage your farm with ease — from crops to tree seedlings.
+          Track progress, explore modern farming techniques, and empower yourself with knowledge to grow sustainably.
         </p>
         <router-link to="/crops">
-          <button class="btn btn-success mt-4 shadow">View Our Crops</button>
+          <button class="btn btn-success mt-4 shadow">Explore Farm Crops</button>
         </router-link>
       </div>
+
 
       <!-- Right Column: Full-Fit Image -->
       <div class="col-md-6 d-none d-md-block">
