@@ -74,13 +74,11 @@ onMounted(fetchBlogs)
               class="img-thumbnail w-100"
           />
           <div class="card-body d-flex flex-column">
-            <h5 class="card-title text-success">{{ storage_url + blog.image }}</h5>
+            <h5 class="card-title text-success">{{ blog.title }}</h5>
             <p class="card-text text-muted small mb-2">
-              {{ new Date(blog.created_at).toLocaleDateString() }}
             </p>
             <p class="card-text">{{ blog.summary }}</p>
             <div class="mt-auto">
-              {{blog}}
               <router-link :to="'/blogs/' + blog.hash_id" class="btn btn-outline-success">
                 Read More
               </router-link>
