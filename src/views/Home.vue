@@ -4,7 +4,7 @@ import Navbar from "../components/Navbar.vue";
 import Landing from "../components/Landing.vue";
 import Footer from "../components/Footer.vue";
 import LatestBlogs from "../components/LatestBlogs.vue";
-import Services from "../components/Services.vue";
+import Testimonials from "../components/Testimonials.vue";
 </script>
 
 <template>
@@ -13,7 +13,7 @@ import Services from "../components/Services.vue";
     <Navbar />
     <Landing />
     <LatestBlogs />
-    <Services />
+    <Testimonials />
     <Footer msg="Powered by Vue & Laravel" />
   </div>
 </template>

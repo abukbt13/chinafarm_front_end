@@ -1,11 +1,38 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onBeforeUnmount } from "vue";
 import api from "../../composables/axios.js";
+
+// Tiptap imports
+import { EditorContent, useEditor } from "@tiptap/vue-3";
+import StarterKit from "@tiptap/starter-kit";
+import Bold from "@tiptap/extension-bold";
+import Italic from "@tiptap/extension-italic";
+import Heading from "@tiptap/extension-heading";
+import BulletList from "@tiptap/extension-bullet-list";
+import OrderedList from "@tiptap/extension-ordered-list";
+import ListItem from "@tiptap/extension-list-item";
 
 const cropName = ref("");
 const period = ref("");
-const factor = ref("");
+const factor = ref(""); // will hold HTML string
 const suggestions = ref([]);
+
+// Setup Tiptap editor
+const editor = useEditor({
+  extensions: [
+    StarterKit,
+    Bold,
+    Italic,
+    Heading.configure({ levels: [2, 3] }),
+    BulletList,
+    OrderedList,
+    ListItem,
+  ],
+  content: "<p>Enter reason or factor here...</p>",
+  onUpdate: ({ editor }) => {
+    factor.value = editor.getHTML(); // keep HTML updated
+  },
+});
 
 const fetchSuggestions = async () => {
   try {
@@ -21,12 +48,13 @@ const submitSuggestion = async () => {
     await api.post("/planting-suggestions", {
       crop_name: cropName.value,
       period: period.value,
-      factor: factor.value,
+      factor: factor.value, // save HTML
     });
 
     cropName.value = "";
     period.value = "";
     factor.value = "";
+    editor.commands.setContent("<p></p>"); // reset editor
 
     // Close modal after submit
     const modal = bootstrap.Modal.getInstance(document.getElementById("suggestModal"));
@@ -41,13 +69,16 @@ const submitSuggestion = async () => {
 onMounted(() => {
   fetchSuggestions();
 });
+
+onBeforeUnmount(() => {
+  editor?.destroy();
+});
 </script>
 
 <template>
   <div class="container my-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h2>🌱 Planting Season Suggestions</h2>
-      <!-- Suggest Button -->
       <button
           class="btn btn-success"
           data-bs-toggle="modal"
@@ -65,7 +96,7 @@ onMounted(() => {
         aria-labelledby="suggestModalLabel"
         aria-hidden="true"
     >
-      <div class="modal-dialog">
+      <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="suggestModalLabel">
@@ -92,7 +123,10 @@ onMounted(() => {
 
               <div class="mb-3">
                 <label class="form-label">Reason/Factor</label>
-                <textarea v-model="factor" class="form-control" rows="3"></textarea>
+                <!-- Replace textarea with Tiptap -->
+                <div class="border rounded p-2">
+                  <EditorContent :editor="editor" class="prose max-w-none" />
+                </div>
               </div>
 
               <button type="submit" class="btn btn-success w-100">
@@ -123,9 +157,8 @@ onMounted(() => {
               <h6 class="card-subtitle mb-2 text-muted">
                 Period: {{ s.period }}
               </h6>
-              <p class="card-text">
-                <strong>Factor:</strong> {{ s.factor }}
-              </p>
+              <!-- Render HTML factor -->
+              <p class="card-text" v-html="s.factor"></p>
             </div>
             <div class="card-footer text-muted small">
               Suggested on {{ new Date(s.created_at).toLocaleDateString() }}
@@ -136,3 +169,9 @@ onMounted(() => {
     </div>
   </div>
 </template>
+
+<style>
+.prose {
+  max-width: 100%;
+}
+</style>

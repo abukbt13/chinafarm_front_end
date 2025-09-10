@@ -6,7 +6,7 @@ const summary =ref([])
 const fetchSummary = async () => {
   try {
     const res = await api.get('farming-projects/count')
-    summary.value = res.data.projects
+    summary.value = res.data.summary
   } catch (err) {
     console.error('Failed to fetch summary:', err)
   }
@@ -25,7 +25,7 @@ onMounted( () => {
             <div class="card-body text-center">
               <h5 class="card-title text-primary fw-bold">🌱 Active Crops</h5>
               <p class="display-6 fw-semibold text-dark mb-2">
-                {{ summary }}
+                {{ summary.activecrops }}
               </p>
               <router-link to="/admin/farm-projects" class="btn btn-outline-primary btn-sm">
                 View Crops
@@ -40,7 +40,7 @@ onMounted( () => {
             <div class="card-body text-center">
               <h5 class="card-title text-success fw-bold">✍️ My Blogs</h5>
               <p class="display-6 fw-semibold text-dark mb-2">
-                {{ summary }}
+                {{ summary.blogs }}
               </p>
               <router-link to="/admin/blogs" class="btn btn-outline-success btn-sm">
                 View Blogs
@@ -55,9 +55,9 @@ onMounted( () => {
             <div class="card-body text-center">
               <h5 class="card-title text-warning fw-bold">💡 My Suggestions</h5>
               <p class="display-6 fw-semibold text-dark mb-2">
-                {{ summary }}
+                {{ summary.suggestions }}
               </p>
-              <router-link to="/admin/planting-season" class="btn btn-outline-warning btn-sm">
+              <router-link to="/admin/crop-suggestion" class="btn btn-outline-warning btn-sm">
                 View Suggestions
               </router-link>
             </div>
