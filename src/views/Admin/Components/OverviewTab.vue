@@ -41,41 +41,50 @@ onMounted(() => {
 
   <div v-else class="space-y-6">
     <!-- Project Header -->
-    <div class="bg-green-100 border-l-4 border-green-500 p-5 rounded-lg shadow-sm">
-      <h3 class="text-2xl font-bold text-green-700 mb-2">
-        🌱 {{ farmingprogress.project.name }}
-      </h3>
-      <p class="text-gray-600">{{ farmingprogress.project.description }}</p>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
-        <p><strong class="text-gray-700">📅 Start Date:</strong> {{ farmingprogress.project.start_date }}</p>
-        <p><strong class="text-gray-700">📅 End Date:</strong> {{ farmingprogress.project.end_date }}</p>
+    <div class="border shadow-lg m-2">
+      <h3 class="text-center">Project Information</h3>
+      <div class="d-flex flex-column flex-lg-row">
+        <div class="border w-100 p-4 m-2 ">
+          <h2>Farm Project</h2>
+          <p>{{ farmingprogress.project.crop }}</p>
+          <div v-if="farmingprogress.project.description" class="">
+            <h2>Description</h2>
+            <p class="text-gray-600">{{ farmingprogress.project.description }}</p>
+          </div>
+        </div>
+        <div class="border w-100 p-4 m-2">
+          <h2>Start Date</h2>
+          <p>{{ farmingprogress.project.start_date }}</p>
+
+          <h2>End Date</h2>
+          <p>{{ farmingprogress.project.end_date }}</p>
+        </div>
+
+
+
       </div>
     </div>
 
-    <!-- Financial Summary -->
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-      <div class="bg-white shadow-md rounded-xl p-6 text-center border-t-4 border-red-400">
-        <h4 class="text-lg font-semibold text-gray-700">💸 Total Expenses</h4>
-        <p class="text-2xl font-bold text-red-500 mt-2">Ksh {{ farmingprogress.expense }}</p>
+    <div class="border shadow-lg m-2">
+      <h3 class="text-center">Financial Summary</h3>
+      <div class="d-flex flex-column flex-lg-row">
+        <div class="border w-100 p-4 m-2">
+          <h3>💸 Total Expenses</h3>
+          <p>Ksh {{ farmingprogress.expense }}</p>
+          <div  class="">
+            <h2>Returns</h2>
+            <p class="text-gray-600">Ksh {{ farmingprogress.returns }}</p>
+          </div>
+        </div>
+        <div class="border w-100 p-4 m-2">
+          <h3>📊 Profit</h3>
+          <div v-if="farmingprogress.project.description" class="">
+            <h2>Description</h2>
+            <p class="text-gray-600">Ksh {{ farmingprogress.profit }}</p>
+          </div>
       </div>
-
-      <div class="bg-white shadow-md rounded-xl p-6 text-center border-t-4 border-blue-400">
-        <h4 class="text-lg font-semibold text-gray-700">💰 Total Returns</h4>
-        <p class="text-2xl font-bold text-blue-500 mt-2">Ksh {{ farmingprogress.returns }}</p>
-      </div>
-
-      <div
-          class="bg-white shadow-md rounded-xl p-6 text-center border-t-4"
-          :class="farmingprogress.profit >= 0 ? 'border-green-400' : 'border-red-400'"
-      >
-        <h4 class="text-lg font-semibold text-gray-700">📊 Profit</h4>
-        <p
-            class="text-2xl font-bold mt-2"
-            :class="farmingprogress.profit >= 0 ? 'text-green-600' : 'text-red-600'"
-        >
-          Ksh {{ farmingprogress.profit }}
-        </p>
+        </div>
       </div>
     </div>
-  </div>
+
 </template>

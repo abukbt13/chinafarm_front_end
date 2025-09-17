@@ -11,9 +11,7 @@
 </script>
 
 <template>
-  <router-link class="text-decoration-none mb-4" to="/admin/farm-projects"><i class="bi bi-chevron-left" > Back</i></router-link>
-  <br>
-  <br>
+  <router-link class="text-decoration-none " to="/admin/farm-projects"><i class="bi bi-chevron-left" > Back</i></router-link>
   <!-- buttons -->
   <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item" role="presentation">
@@ -54,3 +52,10 @@
 
 
 </template>
+
+<style>
+body{
+  height: 90vh;
+  overflow: scroll;
+}
+</style>
