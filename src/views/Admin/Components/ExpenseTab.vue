@@ -10,6 +10,7 @@ const props = defineProps({
 })
 
 const expenses = ref([])
+const total = ref()
 const newExpense = ref({ name: '', description: '', date: '' ,amount:''})
 const editExpense = ref(null)
 const loading = ref(true)
@@ -19,7 +20,8 @@ const loading = ref(true)
 const fetchExpenses = async () => {
   try {
     const res = await api.get(`expenses/${props.seasonId}`)
-    expenses.value = res.data.expense
+    expenses.value = res.data.expense.all_expense
+    total.value = res.data.expense.total
     // console.log(res)
   } catch (err) {
     console.error(err)
@@ -187,6 +189,10 @@ onMounted(() => {
               <button class="btn btn-sm btn-danger" @click="deleteExpense(expense.id)">Delete</button>
             </template>
           </td>
+
+        </tr>
+        <tr v-if="expenses.length">
+          <td colspan="5" class="text-center text-muted"> Total Expense {{total}}</td>
         </tr>
         <tr v-if="!expenses.length">
           <td colspan="4" class="text-center text-muted">No expenses found.</td>

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import {ref, onMounted, watch} from 'vue'
 import api from "../../composables/axios.js"
 import { auth } from "../../composables/auth.js"
 import Modal from "bootstrap/js/dist/modal" // ✅ Correct Bootstrap Modal class
@@ -11,6 +11,7 @@ const plans = ref([])
 const crop = ref('')
 const startDate = ref('')
 const endDate = ref('')
+const period = ref('')
 const description = ref('')
 const success = ref(false)
 const errors = ref({})
@@ -35,12 +36,50 @@ const FetchFarmingProgress =async ()=>{
     console.error('Failed to fetch crops:', err)
   }
 }
+
+watch([startDate, period], ([newStart, newPeriod]) => {
+  if (newStart && newPeriod) {
+    const start = new Date(`${newStart}T00:00:00`) // ensure safe parse
+    if (!isNaN(start.getTime())) {
+      const newEnd = new Date(start)
+      newEnd.setDate(newEnd.getDate() + parseInt(newPeriod)) // add days
+      endDate.value = newEnd.toISOString().slice(0, 10) // format YYYY-MM-DD
+    }
+  }
+})
+
+
 const saveCrop = async () => {
-  errors.value = {}
   success.value = false
+  const parseDate = (d) => {
+    if (typeof d === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(d)) {
+      // force local midnight to avoid timezone shifts
+      return new Date(`${d}T00:00:00`)
+    }
+    return new Date(d)
+  }
+
+  const start = parseDate(startDate.value)
+  const end = parseDate(endDate.value)
+
+  if (end.getTime() <= start.getTime()) {
+    errors.value.end_date = 'End date should be greater than start date'
+    return
+  }
+  const minEndDate = new Date(start)
+  minEndDate.setMonth(minEndDate.getMonth() + 1)
+
+  // Option: if you prefer "at least 30 days" instead of one calendar month, use:
+  // const minEndDate = new Date(start.getTime() + 30 * 24 * 60 * 60 * 1000)
+
+  if (end.getTime() < minEndDate.getTime()) {
+    errors.value.end_date = 'End date should be at least one month after start date'
+    return
+  }
 
   try {
     const response = await api.post('farming-projects', {
+      period: period.value,
       crop: crop.value,
       start_date: startDate.value,
       end_date: endDate.value || null,
@@ -49,7 +88,6 @@ const saveCrop = async () => {
 
     if (response.status === 201 || response.status === 200) {
       success.value = true
-
       // Clear form
       crop.value = ''
       startDate.value = ''
@@ -63,8 +101,8 @@ const saveCrop = async () => {
     } else {
       console.error(err)
     }
-  }
-}
+
+}}
 
 onMounted(() => {
   AuthUser()
@@ -123,7 +161,11 @@ onMounted(() => {
               <div class="mb-3">
                 <label class="form-label">End Date (Optional)</label>
                 <input type="date" class="form-control" v-model="endDate" />
-                <small class="text-danger" v-if="errors.end_date">{{ errors.end_date[0] }}</small>
+                <p class="text-danger" v-if="errors.end_date">{{ errors.end_date }}</p>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Maturity period in day (Optional)</label>
+                <input type="number" class="form-control" v-model="period" />
               </div>
 
               <div class="mb-3">
