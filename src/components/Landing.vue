@@ -6,7 +6,7 @@
     <section class="d-flex flex-wrap align-items-stretch bg-light rounded shadow p-4">
       <!-- Left Column: Text -->
       <div class="col-12 col-md-6 mb-4 mb-md-0 d-flex flex-column justify-content-center">
-        <h1 class="display-5 fw-bold text-success">Welcome to China Farm Management System</h1>
+        <h1 class="display-5 fw-bold text-success">Welcome to Farmtracker Management System</h1>
         <p class="lead mt-3">
           Manage your farm with ease — from crops to tree seedlings.
           Track progress, explore modern farming techniques, and empower yourself with knowledge to grow sustainably.

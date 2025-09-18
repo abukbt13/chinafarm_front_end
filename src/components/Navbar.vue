@@ -44,7 +44,7 @@ onMounted(()=>{
   <nav class="navbar">
     <div class="container">
       <!-- Logo -->
-      <a href="/" class="logo">🌱 CHINA FARM</a>
+      <a href="/" class="logo">🌱 FarmTracker</a>
 
       <!-- Hamburger -->
       <button class="menu-btn" @click="toggleNav">
