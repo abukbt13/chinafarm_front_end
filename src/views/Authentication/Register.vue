@@ -41,66 +41,64 @@ const submit = async () => {
 
 <template>
   <Navbar />
-  <div class="container mt-5">
-    <div class="row justify-content-center">
-      <div class="col-md-6">
-        <div class="card shadow">
-          <div class="card-header bg-success text-white text-center">
-            <h4>Register</h4>
-          </div>
-          <div class="card-body">
-            <form @submit.prevent="submit">
-              <div class="mb-3">
-                <label for="name" class="form-label">Full Name</label>
-                <input
-                    v-model="form.name"
-                    type="text"
-                    class="form-control"
-                    id="name"
-                    required
-                />
-              </div>
+  <div class="container mt-5 d-flex align-items-center justify-content-center">
+    <div class="col-12 col-md-8 col-lg-8 col-xl-4 card shadow-lg p-4">
+      <h3 class="text-center mb-4">Register</h3>
 
-              <div class="mb-3">
-                <label for="email" class="form-label">Email address</label>
-                <input
-                    v-model="form.email"
-                    type="email"
-                    class="form-control"
-                    id="email"
-                    required
-                />
-              </div>
-
-              <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input
-                    v-model="form.password"
-                    type="password"
-                    class="form-control"
-                    id="password"
-                    required
-                />
-              </div>
-
-              <div class="mb-3">
-                <label for="confirmPassword" class="form-label">Confirm Password</label>
-                <input
-                    v-model="form.password_confirmation"
-                    type="password"
-                    class="form-control"
-                    id="confirmPassword"
-                    required
-                />
-              </div>
-
-              <button type="submit" class="btn btn-success w-100">Register</button>
-            </form>
-          </div>
-          <p class="text-center">Already have an account <router-link to="/login">Login here</router-link></p>
-
+      <form @submit.prevent="submit">
+        <div class="mb-3">
+          <label for="name" class="form-label">Full Name</label>
+          <input
+              v-model="form.name"
+              type="text"
+              class="form-control"
+              id="name"
+              required
+          />
         </div>
-      </div>
+
+        <div class="mb-3">
+          <label for="email" class="form-label">Email address</label>
+          <input
+              v-model="form.email"
+              type="email"
+              class="form-control"
+              id="email"
+              required
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input
+              v-model="form.password"
+              type="password"
+              class="form-control"
+              id="password"
+              required
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="confirmPassword" class="form-label">Confirm Password</label>
+          <input
+              v-model="form.password_confirmation"
+              type="password"
+              class="form-control"
+              id="confirmPassword"
+              required
+          />
+        </div>
+
+        <button type="submit" class="btn btn-success w-100">Register</button>
+      </form>
+
+      <p class="text-center mt-3">
+        Already have an account?
+        <router-link to="/login" class="fw-semibold text-success text-decoration-none">
+          Login here
+        </router-link>
+      </p>
     </div>
   </div>
 </template>

@@ -27,7 +27,7 @@ const handleLogin = async () => {
 <template>
   <Navbar />
   <div class="container mt-5 d-flex align-items-center justify-content-center">
-    <div class="w-50">
+    <div class="col-12 col-md-8 col-lg-8 col-xl-4 card shadow-lg p-4">
       <h3 class="text-center">Login</h3>
       <form @submit.prevent="handleLogin">
         <div class="mb-3">
