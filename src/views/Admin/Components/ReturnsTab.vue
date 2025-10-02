@@ -83,15 +83,18 @@ onMounted(() => {
           <div class="modal-body">
             <form @submit.prevent="submitReturn" class="mb-4">
               <div class="mb-3">
-                <label for="returnName" class="form-label">Return Name</label>
-                <input
+                <label for="returnName" class="form-label">Type of sale(what did you sale)</label>
+                <select
                     v-model="newReturn.name"
-                    type="text"
                     class="form-control"
                     id="returnName"
-                    placeholder="e.g. Produce Sales"
                     required
-                />
+                >
+                  <option value="">-- Select Return Type --</option>
+                  <option value="Produce Sale">Produce Sale</option>
+                  <option value="Seedling Sale">Seedling Sale</option>
+                </select>
+
               </div>
 
               <div class="mb-3">
@@ -101,7 +104,7 @@ onMounted(() => {
                     type="text"
                     class="form-control"
                     id="returnDescription"
-                    placeholder="Short description"
+                    placeholder="Describe the sale e.g 100 heads of cabbages"
                 />
               </div>
 

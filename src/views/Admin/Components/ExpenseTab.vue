@@ -91,12 +91,19 @@ onMounted(() => {
                 <label for="expenseName" class="form-label">Expense Name</label>
                 <input
                     v-model="newExpense.name"
-                    type="text"
+                    list="expenseCategories"
                     class="form-control"
-                    id="expenseName"
-                    placeholder="e.g. Seeds, Fertilizer"
+                    id="expenseCategory"
+                    placeholder="-- Select Expense Category --"
                     required
-                >
+                />
+
+                <datalist id="expenseCategories">
+                  <option value="Weeding"></option>
+                  <option value="Clearing"></option>
+                  <option value="Buying of manure/fertiliser"></option>
+                  <option value="Land preparation"></option>
+                </datalist>
               </div>
 
               <!-- Description -->
