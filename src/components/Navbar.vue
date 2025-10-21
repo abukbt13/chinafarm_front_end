@@ -68,7 +68,7 @@ onMounted(()=>{
               <i class="bi bi-person-circle fs-4"></i>
               <div class="dropdown">
 
-                <router-link to="/admin">Dashboard</router-link>
+                <router-link to="/user">Dashboard</router-link>
                 <router-link to="/user/profile">Profile</router-link>
                 <a @click.prevent="logout" class="dropdown-item" href="#">Logout</a>
               </div>

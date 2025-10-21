@@ -2,13 +2,14 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../views/Home.vue';
 
 import axios from 'axios'
-import adminRoutes from './adminRoutes';
-import userRoutes from './userRoutes';
+import adminRoutes from './userRoutes.js';
+import userRoutes from './adminRoutes.js';
 import auth from './auth.js';
 import api from "../composables/axios.js";
 import LatestBlogs from "../components/LatestBlogs.vue";
 import Blogs from "../components/Blogs.vue";
 import ReadBlogs from "../components/ReadBlogs.vue";
+import Profile from "../views/Profile.vue";
 
 const routes = [
     ...userRoutes,
@@ -18,6 +19,11 @@ const routes = [
         path: '/',
         name: 'Home',
         component: Home,
+    },
+    {
+        path: '/user/profile',
+        name:'profile',
+        component: Profile
     },
     {
         path: '/blogs',

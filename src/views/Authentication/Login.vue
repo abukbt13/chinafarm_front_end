@@ -14,14 +14,25 @@ const form = ref({
 const handleLogin = async () => {
   try {
     const res = await api.post('login', form.value);
-    localStorage.setItem('token', res.data.token);
+    const { token, user } = res.data;
+
+    localStorage.setItem('token', token);
+    localStorage.setItem('user', JSON.stringify(user));
+
     Swal.fire('Success', 'Login successful', 'success');
-    // redirect if needed
-    await router.push('/admin')
+
+    if (user.role === 'admin') {
+      await router.push('/admin');
+    } else if (user.role === 'farmer') {
+      await router.push('/user');
+    } else {
+      await router.push('/dashboard');
+    }
   } catch (err) {
-    Swal.fire('Error', err.response.data.message || 'Invalid credentials', 'error');
+    await  Swal.fire('Error', err.response?.data?.message || 'Invalid credentials', 'error');
   }
 };
+
 </script>
 
 <template>

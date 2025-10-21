@@ -96,8 +96,8 @@ onMounted(() => {
                     required
                 >
                   <option value="" disabled>-- Select Expense Category --</option>
-                  <option value="Seeds">Buying Seeds</option>
-                  <option value="Fertilizer">Buying Fertilizer</option>
+                  <option value="Buying Seeds">Buying Seeds</option>
+                  <option value="Buying Fertilizer">Buying Fertilizer</option>
                   <option value="Labour">Labour</option>
                   <option value="Transport">Transport</option>
                   <option value="Pesticides">Pesticides</option>

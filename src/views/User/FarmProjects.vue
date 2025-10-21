@@ -121,7 +121,7 @@ onMounted(() => {
 
     <div class="row row-cols-1 row-cols-md-3 g-4">
       <div class="col" v-for="item in plans" :key="item">
-        <router-link cla :to="'/admin/project-progress/' + item.id"  class="card text-decoration-none bg-pr shadow-sm h-100">
+        <router-link cla :to="'/user/project-progress/' + item.id"  class="card text-decoration-none bg-pr shadow-sm h-100">
           <div class="card-body">
             <h5 class="card-title">{{ item.crop }}</h5>
               <p>{{item.description}}</p>

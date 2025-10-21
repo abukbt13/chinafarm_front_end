@@ -1,8 +1,8 @@
-<script setup lang="ts">
+<script setup>
 // Example user data (later can come from API or props)
-import Navbar from "../../components/Navbar.vue";
-import api from "../../composables/axios";
+import Navbar from "../components/Navbar.vue";
 import {onMounted, ref} from "vue";
+import api from "../composables/axios.js";
 const user = ref([])
 const fetcUser = async () => {
   try {

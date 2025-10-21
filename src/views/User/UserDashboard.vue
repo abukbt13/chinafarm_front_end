@@ -16,16 +16,16 @@ onMounted(() => {
       <div class="offcanvas-body">
         <ul class="nav flex-column">
           <li class="nav-item mb-2"  data-bs-dismiss="offcanvas">
-            <router-link class="nav-link text-white"  to="/admin">Home</router-link>
+            <router-link class="nav-link text-white"  to="/user">Home</router-link>
           </li>
           <li class="nav-item mb-2"  data-bs-dismiss="offcanvas">
-            <router-link class="nav-link text-white"  to="/admin/farm-projects">My Farm Projects</router-link>
+            <router-link class="nav-link text-white"  to="/user/farm-projects">My Farm Projects</router-link>
           </li>
           <li class="nav-item mb-2"  data-bs-dismiss="offcanvas">
-            <router-link class="nav-link text-white"  to="/admin/crop-suggestion">My Crop Suggestions</router-link>
+            <router-link class="nav-link text-white"  to="/user/crop-suggestion">My Crop Suggestions</router-link>
           </li>
           <li class="nav-item mb-2"  data-bs-dismiss="offcanvas">
-            <router-link class="nav-link text-white"  to="/admin/blogs">My Blogs</router-link>
+            <router-link class="nav-link text-white"  to="/user/blogs">My Blogs</router-link>
           </li>
         </ul>
       </div>
@@ -35,16 +35,16 @@ onMounted(() => {
     <nav class="d-none sticky-top d-md-block bg-success text-white p-3 vh-100" style="width: 250px;">
       <ul class="nav flex-column">
         <li class="nav-item mb-2"  data-bs-dismiss="offcanvas">
-          <router-link class="nav-link text-white"  to="/admin">Home</router-link>
+          <router-link class="nav-link text-white"  to="/user">Home</router-link>
         </li>
         <li class="nav-item mb-2"  data-bs-dismiss="offcanvas">
-          <router-link class="nav-link text-white"  to="/admin/farm-projects">My Farm Projects</router-link>
+          <router-link class="nav-link text-white"  to="/user/farm-projects">My Farm Projects</router-link>
         </li>
         <li class="nav-item mb-2"  data-bs-dismiss="offcanvas">
-          <router-link class="nav-link text-white"  to="/admin/crop-suggestion">My Crop Suggestions</router-link>
+          <router-link class="nav-link text-white"  to="/user/crop-suggestion">My Crop Suggestions</router-link>
         </li>
         <li class="nav-item mb-2"  data-bs-dismiss="offcanvas">
-          <router-link class="nav-link text-white"  to="/admin/blogs">My Blogs</router-link>
+          <router-link class="nav-link text-white"  to="/user/blogs">My Blogs</router-link>
         </li>
       </ul>
     </nav>

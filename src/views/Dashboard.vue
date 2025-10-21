@@ -4,7 +4,7 @@ import { auth } from '../composables/auth'
 
 import Navbar from "../components/Navbar.vue";
 import {onMounted} from "vue";
-import AdminDashboard from "./Admin/AdminDashboard.vue";
+import UserDashboard from "./Admin/UserDashboard.vue";
 import GuestDashboard from "./Guest/GuestDashboard.vue";
 
 const { user, isLoggedIn, AuthUser } = auth()
@@ -19,7 +19,7 @@ onMounted(() => {
     <Navbar />
 <!--{{user}}-->
     <div v-if="isLoggedIn">
-      <AdminDashboard v-if="user.role === 'admin'" />
+      <UserDashboard v-if="user.role === 'admin'" />
       <GuestDashboard v-else-if="user.role === 'guest'" />
       <p v-else>Unknown role: {{ user.role }}</p>
     </div>

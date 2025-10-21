@@ -42,9 +42,22 @@ onMounted(() => {
   <div v-else class="space-y-6">
     <!-- Project Header -->
     <div class="border shadow-lg m-2">
-      <h3 class="text-center">Project Information</h3>
+      <h1 class="text-center">Project Information</h1>
+      <h2 class="text-center">Project Status</h2>
+      <h3
+          class="text-center"
+          :class="{
+    'text-warning': farmingprogress.project.status === 'pending',
+    'text-success': farmingprogress.project.status === 'active',
+    'text-danger': farmingprogress.project.status === 'closed'
+  }"
+      >
+        {{ farmingprogress.project.status }}
+      </h3>
+
       <div class="d-flex flex-column flex-lg-row">
-        <div class="border w-100 p-4 m-2 ">
+
+        <div class=" w-100 p-4 m-2 ">
           <h2>Farm Project</h2>
           <p>{{ farmingprogress.project.crop }}</p>
           <div v-if="farmingprogress.project.description" class="">
@@ -52,7 +65,7 @@ onMounted(() => {
             <p class="text-gray-600">{{ farmingprogress.project.description }}</p>
           </div>
         </div>
-        <div class="border w-100 p-4 m-2">
+        <div class="w-100 p-4 m-2">
           <h2>Start Date</h2>
           <p>{{ farmingprogress.project.start_date }}</p>
 
@@ -79,7 +92,6 @@ onMounted(() => {
         <div class="border w-100 p-4 m-2">
           <h3>📊 Profit</h3>
           <div v-if="farmingprogress.project.description" class="">
-            <h2>Description</h2>
             <p class="text-gray-600">Ksh {{ farmingprogress.profit }}</p>
           </div>
       </div>

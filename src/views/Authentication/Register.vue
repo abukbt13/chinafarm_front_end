@@ -19,24 +19,28 @@ const form = ref({
 const submit = async () => {
   try {
     const res = await api.post('register', form.value);
+
+    // store token
     localStorage.setItem('token', res.data.token);
 
-    Swal.fire({
-      icon: 'success',
-      title: 'Registered successfully',
-      timer: 1500,
-      showConfirmButton: false,
-    });
-      await router.push('/admin')
+    // extract the user data from response
+    const user = res.data.user;
 
-  } catch (error) {
-    Swal.fire({
-      icon: 'error',
-      title: 'Registration Failed',
-      text: error.res?.data?.message || 'Something went wrong',
-    });
+    // redirect based on role
+    if (user.role === 'admin') {
+      await router.push('/admin');
+    } else if (user.role === 'farmer') {
+      await router.push('/farmer');
+    } else {
+      await router.push('/dashboard');
+    }
+
+    Swal.fire('Success', 'Registration successful', 'success');
+  } catch (err) {
+    Swal.fire('Error', err.response?.data?.message || 'Registration failed', 'error');
   }
 };
+
 </script>
 
 <template>
