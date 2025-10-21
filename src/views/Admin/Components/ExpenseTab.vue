@@ -88,23 +88,22 @@ onMounted(() => {
             <form @submit.prevent="submitExpense" class="mb-4">
               <!-- Name -->
               <div class="mb-3">
-                <label for="expenseName" class="form-label">Expense Name</label>
-                <input
+                <label for="expenseCategory" class="form-label">Expense Category</label>
+                <select
                     v-model="newExpense.name"
-                    list="expenseCategories"
-                    class="form-control"
                     id="expenseCategory"
-                    placeholder="-- Select Expense Category --"
+                    class="form-select"
                     required
-                />
-
-                <datalist id="expenseCategories">
-                  <option value="Weeding"></option>
-                  <option value="Clearing"></option>
-                  <option value="Buying of manure/fertiliser"></option>
-                  <option value="Land preparation"></option>
-                </datalist>
+                >
+                  <option value="" disabled>-- Select Expense Category --</option>
+                  <option value="Seeds">Buying Seeds</option>
+                  <option value="Fertilizer">Buying Fertilizer</option>
+                  <option value="Labour">Labour</option>
+                  <option value="Transport">Transport</option>
+                  <option value="Pesticides">Pesticides</option>
+                </select>
               </div>
+
 
               <!-- Description -->
               <div class="mb-3">
