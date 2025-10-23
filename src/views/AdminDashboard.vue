@@ -1,3 +1,47 @@
+
+<script setup>
+import { ref, onMounted } from "vue";
+import axios from "axios";
+import Swal from "sweetalert2";
+import api from "../composables/axios.js";
+
+const roles = ref([]);
+const permissions = ref([]);
+const selectedPermissions = ref({});
+const loading = ref(true);
+
+
+
+async function fetchRolesPermissions () {
+  loading.value = true;
+  try {
+    const res =  await api.get("roles-permissions");
+    roles.value = res.data.roles;
+    permissions.value = res.data.permissions;
+  } catch (err) {
+    console.error(err);
+  } finally {
+    loading.value = false;
+  }
+}
+
+async function  assignPermissions  (roleId) {
+  try {
+    await api.post(`roles/${roleId}/permissions`, {
+      permissions: selectedPermissions.value[roleId] || []
+    });
+    Swal.fire("Success", "Permissions updated successfully", "success");
+    await fetchRolesPermissions(); // refresh
+  } catch (err) {
+    console.error(err);
+    Swal.fire("Error", "Failed to assign permissions", "error");
+  }
+}
+onMounted(async () => {
+  await fetchRolesPermissions();
+});
+</script>
+
 <template>
   <div class="p-4">
     <h2 class="text-2xl font-bold mb-4">Roles & Permissions</h2>
@@ -6,7 +50,7 @@
 
     <div v-else class="grid gap-4">
       <div v-for="role in roles" :key="role.id" class="p-4 border rounded shadow-sm bg-white">
-        <h3 class="text-lg font-semibold mb-2">{{ role.name }}</h3>
+        <h3 class="text-lg font-semibold mb-2">{{ roles.name }}</h3>
 
         <div class="flex flex-wrap gap-2 mb-3">
           <span
@@ -37,46 +81,6 @@
   </div>
 </template>
 
-<script setup>
-import { ref, onMounted } from "vue";
-import axios from "axios";
-import Swal from "sweetalert2";
-
-const roles = ref([]);
-const permissions = ref([]);
-const selectedPermissions = ref({});
-const loading = ref(true);
-
-onMounted(async () => {
-  await fetchRolesPermissions();
-});
-
-async function fetchRolesPermissions() {
-  loading.value = true;
-  try {
-    const res = await axios.get("/api/roles-permissions");
-    roles.value = res.data.roles;
-    permissions.value = res.data.permissions;
-  } catch (err) {
-    console.error(err);
-  } finally {
-    loading.value = false;
-  }
-}
-
-async function assignPermissions(roleId) {
-  try {
-    await axios.post(`/api/roles/${roleId}/permissions`, {
-      permissions: selectedPermissions.value[roleId] || []
-    });
-    Swal.fire("Success", "Permissions updated successfully", "success");
-    await fetchRolesPermissions(); // refresh
-  } catch (err) {
-    console.error(err);
-    Swal.fire("Error", "Failed to assign permissions", "error");
-  }
-}
-</script>
 
 <style scoped>
 select {

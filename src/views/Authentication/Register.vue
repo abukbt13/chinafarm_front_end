@@ -30,7 +30,7 @@ const submit = async () => {
     if (user.role === 'admin') {
       await router.push('/admin');
     } else if (user.role === 'farmer') {
-      await router.push('/farmer');
+      await router.push('/user');
     } else {
       await router.push('/dashboard');
     }
