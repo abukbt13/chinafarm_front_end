@@ -13,6 +13,8 @@ const farmingprogress = ref(null)
 const loading = ref(true)
 const error = ref(null)
 
+const projectStatus = ref('')
+
 const fetchFarmingSeason = async () => {
   try {
     const res = await api.get(`/farming-projects/${props.season_id}`)
@@ -24,13 +26,16 @@ const fetchFarmingSeason = async () => {
     loading.value = false
   }
 }
-
+function setStatus(data){
+   projectStatus.value = data
+}
 onMounted(() => {
   fetchFarmingSeason()
 })
 </script>
 
 <template>
+
  <div v-if="loading" class="text-center py-10 text-gray-500">
   <span class="animate-pulse">Loading farming season...</span>
 </div>
@@ -42,34 +47,37 @@ onMounted(() => {
   <div v-else class="space-y-6">
     <!-- Project Header -->
     <div class="border shadow-lg m-2">
-      <h1 class="text-center">Project Information</h1>
-      <h2 class="text-center">Project Status</h2>
-      <h3
-          class="text-center"
-          :class="{
-    'text-warning': farmingprogress.project.status === 'pending',
-    'text-success': farmingprogress.project.status === 'active',
-    'text-danger': farmingprogress.project.status === 'closed'
-  }"
-      >
+     <div class="">
+       <i class="bi bi-three-dots-vertical float-end p-4" @click="setStatus(farmingprogress.project.status)" data-bs-toggle="modal" data-bs-target="#changeStatus"></i>
+       <h1  class="text-center text-primary">Project Information</h1>
+       <h2 class="text-center">Status:   <span
+           class="text-center"
+           :class="{
+            'text-warning': farmingprogress.project.status === 'pending',
+            'text-success': farmingprogress.project.status === 'active',
+            'text-danger': farmingprogress.project.status === 'closed'
+          }"
+       >
         {{ farmingprogress.project.status }}
-      </h3>
+      </span></h2>
+     </div>
+
 
       <div class="d-flex flex-column flex-lg-row">
 
-        <div class=" w-100 p-4 m-2 ">
-          <h2>Farm Project</h2>
+        <div class="text-center w-100 p-4 m-2 ">
+          <h4>Project Name</h4>
           <p>{{ farmingprogress.project.crop }}</p>
           <div v-if="farmingprogress.project.description" class="">
-            <h2>Description</h2>
+            <h5>Description</h5>
             <p class="text-gray-600">{{ farmingprogress.project.description }}</p>
           </div>
         </div>
-        <div class="w-100 p-4 m-2">
-          <h2>Start Date</h2>
+        <div class="text-center w-100 p-4 m-2">
+          <h4>Start Date</h4>
           <p>{{ farmingprogress.project.start_date }}</p>
 
-          <h2>End Date</h2>
+          <h5>End Date</h5>
           <p>{{ farmingprogress.project.end_date }}</p>
         </div>
 
@@ -98,5 +106,68 @@ onMounted(() => {
         </div>
       </div>
     </div>
+  <!-- Change Project Status Modal -->
+  <div
+      class="modal fade"
+      id="changeStatus"
+      tabindex="-1"
+      aria-labelledby="changeStatusLabel"
+      aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg rounded-3">
+
+        <!-- Modal Header -->
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title" id="changeStatusLabel">Change Project Status</h5>
+          <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+          ></button>
+        </div>
+
+        <!-- Modal Body -->
+        <div class="modal-body text-center">
+          <label for="statusSelect" class="form-label fw-bold mb-2">Select New Status</label>
+
+          <select
+              id="statusSelect"
+              v-model="newStatus"
+              class="form-select text-capitalize"
+          >
+            <option disabled value="">-- Choose status --</option>
+            <option value="pending">Pending</option>
+            <option value="active">Active</option>
+            <option value="closed">Closed</option>
+          </select>
+
+          <p class="mt-3 text-muted">
+            Current Status: <span class="fw-semibold text-capitalize">{{ projectStatus }}</span>
+          </p>
+        </div>
+
+        <!-- Modal Footer -->
+        <div class="modal-footer">
+          <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+          >
+            Cancel
+          </button>
+          <button
+              type="button"
+              class="btn btn-primary"
+              @click="saveStatusChange"
+          >
+            Save Changes
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
 
 </template>

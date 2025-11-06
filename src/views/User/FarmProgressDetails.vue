@@ -11,7 +11,7 @@
 </script>
 
 <template>
-  <router-link class="text-decoration-none " to="/admin/farm-projects"><i class="bi bi-chevron-left" > Back</i></router-link>
+  <router-link class="text-decoration-none " to="/user/farm-projects"><i class="bi bi-chevron-left" > Back</i></router-link>
   <!-- buttons -->
   <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item" role="presentation">
