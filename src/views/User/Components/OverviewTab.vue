@@ -26,9 +26,30 @@ const fetchFarmingSeason = async () => {
     loading.value = false
   }
 }
-function setStatus(data){
-   projectStatus.value = data
+async function updateStatus(newStatus) {
+  try {
+    const res = await api.post('/farming-projects/'+props.season_id+'/status', {
+      status: newStatus
+    })
+
+    projectStatus.value = newStatus // update reactive status immediately
+
+    Swal.fire({
+      title: 'Success',
+      text: res.data.message || `Project status updated to ${newStatus}`,
+      icon: 'success',
+      timer: 2000,
+      showConfirmButton: false
+    })
+  } catch (err) {
+    Swal.fire({
+      title: 'Error',
+      text: err.response?.data?.message || 'Failed to update status',
+      icon: 'error'
+    })
+  }
 }
+
 onMounted(() => {
   fetchFarmingSeason()
 })
@@ -48,7 +69,17 @@ onMounted(() => {
     <!-- Project Header -->
     <div class="border shadow-lg m-2">
      <div class="">
-       <i class="bi bi-three-dots-vertical float-end p-4" @click="setStatus(farmingprogress.project.status)" data-bs-toggle="modal" data-bs-target="#changeStatus"></i>
+       <div class="float-end p-4" data-bs-toggle="modal" data-bs-target="#changeStatus">
+         <button @click="updateStatus('closed')" v-if="farmingprogress.project.status === 'active'" class="btn m-1 btn-danger">
+           Close Project
+         </button>
+         <button @click="updateStatus('active')" v-else class="btn m-1 btn-success">
+           Reopen Project
+         </button>
+         <button @click="updateStatus('pending')" class="btn btn-danger m-1 btn-success">
+           Suspend Project
+         </button>
+       </div>
        <h1  class="text-center text-primary">Project Information</h1>
        <h2 class="text-center">Status:   <span
            class="text-center"
@@ -107,67 +138,5 @@ onMounted(() => {
       </div>
     </div>
   <!-- Change Project Status Modal -->
-  <div
-      class="modal fade"
-      id="changeStatus"
-      tabindex="-1"
-      aria-labelledby="changeStatusLabel"
-      aria-hidden="true"
-  >
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content border-0 shadow-lg rounded-3">
-
-        <!-- Modal Header -->
-        <div class="modal-header bg-primary text-white">
-          <h5 class="modal-title" id="changeStatusLabel">Change Project Status</h5>
-          <button
-              type="button"
-              class="btn-close btn-close-white"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-          ></button>
-        </div>
-
-        <!-- Modal Body -->
-        <div class="modal-body text-center">
-          <label for="statusSelect" class="form-label fw-bold mb-2">Select New Status</label>
-
-          <select
-              id="statusSelect"
-              v-model="newStatus"
-              class="form-select text-capitalize"
-          >
-            <option disabled value="">-- Choose status --</option>
-            <option value="pending">Pending</option>
-            <option value="active">Active</option>
-            <option value="closed">Closed</option>
-          </select>
-
-          <p class="mt-3 text-muted">
-            Current Status: <span class="fw-semibold text-capitalize">{{ projectStatus }}</span>
-          </p>
-        </div>
-
-        <!-- Modal Footer -->
-        <div class="modal-footer">
-          <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-          >
-            Cancel
-          </button>
-          <button
-              type="button"
-              class="btn btn-primary"
-              @click="saveStatusChange"
-          >
-            Save Changes
-          </button>
-        </div>
-
-      </div>
-    </div>
-  </div>
 
 </template>
