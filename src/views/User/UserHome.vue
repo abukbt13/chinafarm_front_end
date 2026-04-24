@@ -22,9 +22,9 @@ onMounted( () => {
         <!-- Active Crops -->
         <div class="col-md-6 col-lg-4">
           <div class="card shadow-sm border-0 summary-card">
-            <div class="card-body text-center">
-              <h5 class="card-title text-primary fw-bold">🌱 Active Projects</h5>
-              <p class="display-6 fw-semibold text-dark mb-2">
+            <div class="card-body text-center bg-secondary ">
+              <h5 class="card-title text-white fw-bold">🌱 Active Projects</h5>
+              <p class="display-6 fw-semibold text-white mb-2">
                 {{ summary.activecrops }}
               </p>
               <router-link to="/user/farm-projects" class="btn btn-outline-primary btn-sm">
@@ -42,7 +42,7 @@ onMounted( () => {
               <p class="display-6 fw-semibold text-dark mb-2">
                 {{ summary.blogs }}
               </p>
-              <router-link to="/user/blogs" class="btn btn-outline-success btn-sm">
+              <router-link to="/user/blogs" class="btn btn-outline-white btn-sm">
                 View Blogs
               </router-link>
             </div>

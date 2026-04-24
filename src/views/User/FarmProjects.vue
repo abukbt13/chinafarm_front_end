@@ -120,16 +120,25 @@ onMounted(() => {
     </div>
 
     <div class="row row-cols-1 row-cols-md-3 g-4">
-      <div class="col" v-for="item in plans" :key="item">
+      <div class="col"  v-for="item in plans" :key="item">
         <router-link cla :to="'/user/project-progress/' + item.id"  class="card text-decoration-none bg-pr shadow-sm h-100">
-          <div class="card-body">
+          <div class="card-body"   :class="{
+                'bg-success': item.status === 'active',
+                'bg-primary': item.status === 'completed',
+                'bg-danger': item.status === 'overdue',
+                'bg-warning text-dark': item.status === 'pending'
+              }">
+            <i class="bi bi-arrow-right-circle float-end" style="font-size: 2rem;"></i>
+
             <h5 class="card-title">{{ item.crop }}</h5>
               <p>{{item.description}}</p>
             <p class="card-text">
               Planted on: {{ formatDate(item.start_date) }}<br>
               Estimated harvest: {{ item.end_date ? formatDate(item.end_date) : 'N/A' }}
             </p>
-            <span class="badge bg-success">Growing</span>
+             <div class="border w-100 text-uppercase text-center">
+              {{ item.status }}
+            </div>
           </div>
         </router-link>
       </div>
