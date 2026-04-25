@@ -123,8 +123,8 @@ onMounted(() => {
       <div class="col"  v-for="item in plans" :key="item">
         <router-link cla :to="'/user/project-progress/' + item.id"  class="card text-decoration-none bg-pr shadow-sm h-100">
           <div class="card-body"   :class="{
-                'bg-success': item.status === 'active',
-                'bg-primary': item.status === 'completed',
+                'bg-primary': item.status === 'active',
+                'bg-secondary': item.status === 'completed',
                 'bg-danger': item.status === 'overdue',
                 'bg-warning text-dark': item.status === 'pending'
               }">
