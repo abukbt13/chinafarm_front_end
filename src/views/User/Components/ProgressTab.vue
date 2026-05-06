@@ -31,9 +31,14 @@ const fetchMilestones = async () => {
 const previewImages = ref([]) // For preview URLs
 
 function handleFileChange(event) {
-  const files = Array.from(event.target.files)
+  const files = event.target.files
 
-  files.forEach(file => {
+  if (!files || files.length === 0) return
+
+  pictures.value = [] // important reset for mobile consistency
+  previewImages.value = []
+
+  Array.from(files).forEach(file => {
     pictures.value.push(file)
     previewImages.value.push(URL.createObjectURL(file))
   })

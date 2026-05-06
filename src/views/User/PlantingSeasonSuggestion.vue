@@ -37,12 +37,12 @@ const submitSuggestion = async () => {
     planting_month.value = "";
     harvesting_month.value = "";
     reason.value = "";
-
+    fetchSuggestions();
     // Close modal after submit
     const modal = bootstrap.Modal.getInstance(document.getElementById("suggestModal"));
     modal.hide();
 
-    fetchSuggestions();
+
   } catch (error) {
     console.error(error);
   }
