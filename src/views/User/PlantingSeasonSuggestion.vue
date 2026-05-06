@@ -2,37 +2,18 @@
 import { ref, onMounted, onBeforeUnmount } from "vue";
 import api from "../../composables/axios.js";
 
-// Tiptap imports
-import { EditorContent, useEditor } from "@tiptap/vue-3";
-import StarterKit from "@tiptap/starter-kit";
-import Bold from "@tiptap/extension-bold";
-import Italic from "@tiptap/extension-italic";
-import Heading from "@tiptap/extension-heading";
-import BulletList from "@tiptap/extension-bullet-list";
-import OrderedList from "@tiptap/extension-ordered-list";
-import ListItem from "@tiptap/extension-list-item";
 
 const cropName = ref("");
-const period = ref("");
-const factor = ref(""); // will hold HTML string
+const planting_month = ref("");
+const harvesting_month = ref("");
+const reason = ref("");
 const suggestions = ref([]);
 
-// Setup Tiptap editor
-const editor = useEditor({
-  extensions: [
-    StarterKit,
-    Bold,
-    Italic,
-    Heading.configure({ levels: [2, 3] }),
-    BulletList,
-    OrderedList,
-    ListItem,
-  ],
-  content: "<p>Enter reason or factor here...</p>",
-  onUpdate: ({ editor }) => {
-    factor.value = editor.getHTML(); // keep HTML updated
-  },
-});
+const months = [
+  'January', 'February', 'March', 'April',
+  'May', 'June', 'July', 'August',
+  'September', 'October', 'November', 'December'
+]
 
 const fetchSuggestions = async () => {
   try {
@@ -47,14 +28,15 @@ const submitSuggestion = async () => {
   try {
     await api.post("/planting-suggestions", {
       crop_name: cropName.value,
-      period: period.value,
-      factor: factor.value, // save HTML
+      planting_month: planting_month.value,
+      harvesting_month: harvesting_month.value,
+      reason: reason.value, // save HTML
     });
 
     cropName.value = "";
-    period.value = "";
-    factor.value = "";
-    editor.commands.setContent("<p></p>"); // reset editor
+    planting_month.value = "";
+    harvesting_month.value = "";
+    reason.value = "";
 
     // Close modal after submit
     const modal = bootstrap.Modal.getInstance(document.getElementById("suggestModal"));
@@ -70,15 +52,13 @@ onMounted(() => {
   fetchSuggestions();
 });
 
-onBeforeUnmount(() => {
-  editor?.destroy();
-});
+
 </script>
 
 <template>
   <div class="container my-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-      <h2>🌱 Planting Season Suggestions</h2>
+    <div class="d-flex justify-content-around align-items-center mb-4">
+      <h4 class="mb-3">Planting  Suggestions</h4>
       <button
           class="btn btn-success"
           data-bs-toggle="modal"
@@ -117,16 +97,39 @@ onBeforeUnmount(() => {
               </div>
 
               <div class="mb-3">
-                <label class="form-label">Period (e.g., March - August)</label>
-                <input v-model="period" type="text" class="form-control" required />
-              </div>
+                <label class="form-label">Planting Month</label>
+                <select v-model="planting_month" class="form-control">
+                  <option disabled value="">Select Month</option>
+
+                  <option
+                      v-for="month in months"
+                      :key="month"
+                      :value="month"
+                  >
+                    {{ month }}
+                  </option>
+                </select>
+              </div> 
+              <div class="mb-3">
+                <label class="form-label">Harvesting Month</label>
+                <select v-model="harvesting_month" class="form-control">
+                  <option disabled value="">Select Month</option>
+
+                  <option
+                      v-for="month in months"
+                      :key="month"
+                      :value="month"
+                  >
+                    {{ month }}
+                  </option>
+                </select>              </div>
 
               <div class="mb-3">
-                <label class="form-label">Reason/Factor</label>
+                <label class="form-label">Reason/reason</label>
                 <!-- Replace textarea with Tiptap -->
-                <div class="border rounded p-2">
-                  <EditorContent :editor="editor" class="prose max-w-none" />
-                </div>
+                <textarea v-model="reason" class="form-control" height="4">
+
+                </textarea>
               </div>
 
               <button type="submit" class="btn btn-success w-100">
@@ -140,38 +143,103 @@ onBeforeUnmount(() => {
 
     <!-- Suggestions Dashboard -->
     <div>
-      <h4 class="mb-3">My Suggestions</h4>
+
       <div v-if="suggestions.length === 0" class="text-muted text-center">
         No suggestions yet.
       </div>
 
-      <div class="row g-3">
-        <div
-            v-for="(s, index) in suggestions"
-            :key="index"
-            class="col-md-4 col-sm-6"
-        >
-          <div class="card h-100 shadow-sm border-0">
-            <div class="card-body">
-              <h5 class="card-title text-success">{{ s.crop_name }}</h5>
-              <h6 class="card-subtitle mb-2 text-muted">
-                Period: {{ s.period }}
-              </h6>
-              <!-- Render HTML factor -->
-              <p class="card-text" v-html="s.factor"></p>
-            </div>
-            <div class="card-footer text-muted small">
-              Suggested on {{ new Date(s.created_at).toLocaleDateString() }}
+        <div class="row g-4">
+          <div
+              v-for="(s, index) in suggestions"
+              :key="index"
+              class="col-lg-4 col-md-6"
+          >
+            <div class="card suggestion-card h-100 border-0">
+
+              <!-- Header -->
+              <div class="card-header bg-transparent border-0 text-center pt-4">
+
+                <h5 class="fw-bold text-success mb-0">
+                  {{ s.crop_name }}
+                </h5>
+              </div>
+
+              <!-- Body -->
+              <div class="card-body text-center px-4">
+
+                <!-- Months Section -->
+                <div class="d-flex justify-content-between align-items-center mb-3">
+
+                  <div>
+                    <small class="text-muted d-block">Planting</small>
+                    <span class="badge bg-success-subtle text-success fw-semibold px-3 py-2">
+                {{ s.planting_month }}
+              </span>
+                  </div>
+
+                  <div class="text-muted fw-bold">
+                    →
+                  </div>
+
+                  <div>
+                    <small class="text-muted d-block">Harvest</small>
+                    <span class="badge bg-warning-subtle text-warning fw-semibold px-3 py-2">
+                {{ s.harvesting_month }}
+              </span>
+                  </div>
+
+                </div>
+
+                <!-- Reason -->
+                <div class="reason-box text-start mt-3">
+                  <p class="mb-0 small" v-html="s.reason"></p>
+                </div>
+
+              </div>
+
+              <!-- Footer -->
+              <div class="card-footer bg-transparent border-0 text-center pb-3">
+                <small class="text-muted">
+                  Posted on {{ new Date(s.created_at).toLocaleDateString() }}
+                </small>
+              </div>
+
             </div>
           </div>
         </div>
-      </div>
     </div>
   </div>
 </template>
 
-<style>
-.prose {
-  max-width: 100%;
+<style scoped>
+.suggestion-card {
+  border-radius: 16px;
+  transition: all 0.3s ease;
+  background: #ffffff;
+}
+
+.suggestion-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+}
+
+.icon-circle {
+  width: 55px;
+  height: 55px;
+  background: #e9f7ef;
+  color: #28a745;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin: auto;
+}
+
+.reason-box {
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 12px;
+  min-height: 70px;
 }
 </style>
