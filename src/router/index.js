@@ -10,6 +10,7 @@ import LatestBlogs from "../components/LatestBlogs.vue";
 import Blogs from "../components/Blogs.vue";
 import ReadBlogs from "../components/ReadBlogs.vue";
 import Profile from "../views/Profile.vue";
+import AboutUs from "../components/AboutUs.vue";
 
 const routes = [
     ...userRoutes,
@@ -24,6 +25,10 @@ const routes = [
         path: '/user/profile',
         name:'profile',
         component: Profile
+    },
+    {
+        path: '/about-us',
+        component: AboutUs
     },
     {
         path: '/blogs',

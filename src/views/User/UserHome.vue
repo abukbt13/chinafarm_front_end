@@ -22,9 +22,9 @@ onMounted( () => {
         <!-- Active Crops -->
         <div class="col-md-6 col-lg-4">
           <div class="card shadow-sm border-0 summary-card">
-            <div class="card-body text-center" style="background-color: blue">
-              <h5 class="card-title text-white fw-bold">🌱 Active Projects</h5>
-              <p class="display-6 fw-semibold text-white mb-2 text-center">
+            <div class="card-body text-center" >
+              <h5 class="card-title text-success fw-bold">🌱 Active Projects</h5>
+              <p class="display-6 fw-semibold text-success mb-2 text-center">
                 {{ summary.activecrops }}
               </p>
               <router-link to="/user/farm-projects" class="btn btn-outline-primary btn-sm text-center">

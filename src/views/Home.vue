@@ -10,11 +10,12 @@ import Testimonials from "../components/Testimonials.vue";
 <template>
   <div class="contents">
 
+
     <Navbar />
     <Landing />
     <LatestBlogs />
     <Testimonials />
-    <Footer msg="Powered by Vue & Laravel" />
+    <Footer/>
   </div>
 </template>
 

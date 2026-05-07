@@ -3,7 +3,7 @@
 
 <template>
   <section class="container py-5">
-    <h2 class="text-center mb-5 text-success fw-bold">What People Say</h2>
+    <h2 class="text-center mb-5 text-success fw-bold">What People say about us</h2>
     <div class="row g-4">
       <!-- Testimonial 1 -->
       <div class="col-12 col-md-6 col-lg-4">

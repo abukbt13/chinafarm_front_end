@@ -6,13 +6,12 @@
     <section class="d-flex flex-wrap align-items-stretch bg-light rounded shadow p-4">
       <!-- Left Column: Text -->
       <div class="col-12 col-md-6 mb-4 mb-md-0 d-flex flex-column justify-content-center">
-        <h1 class="display-5 fw-bold text-success">Welcome to Farmtracker Management System</h1>
+        <h1 class="display-5 fw-bold text-success">Mytracker  System</h1>
         <p class="lead mt-3">
-          Manage your farm with ease — from crops to tree seedlings.
-          Track progress, explore modern farming techniques, and empower yourself with knowledge to grow sustainably.
-        </p>
-        <router-link to="/crops">
-          <button class="btn btn-success mt-4 shadow">Explore Farm Crops</button>
+          Take control of your projects with MyTracker.
+          Track expenses, monitor returns, and gain powerful visual insights to make better decisions        </p>
+        <router-link to="/user">
+          <button class="btn btn-success mt-4 shadow">Get started</button>
         </router-link>
       </div>
 

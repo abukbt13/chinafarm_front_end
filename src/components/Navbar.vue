@@ -44,7 +44,7 @@ onMounted(()=>{
   <nav class="navbar">
     <div class="container">
       <!-- Logo -->
-      <a href="/" class="logo">🌱 FarmTracker</a>
+      <router-link to="/" class="logo">🌱 FarmTracker</router-link>
       <!-- Hamburger -->
       <button class="menu-btn" @click="toggleNav">
         <span v-if="isCollapsed">☰</span>
