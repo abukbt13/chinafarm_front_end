@@ -3,6 +3,8 @@ import { ref, onMounted } from 'vue'
 import api from "../../../composables/axios.js";
 import Swal from 'sweetalert2'
 import {storage_link} from "../../../composables/storage_link.js";
+import imageCompression from 'browser-image-compression'
+
 const { storage_url } = storage_link()
 
 const props = defineProps({
@@ -30,7 +32,9 @@ const fetchMilestones = async () => {
 
 const previewImages = ref([]) // For preview URLs
 
-function handleFileChange(event) {
+
+async function handleFileChange(event) {
+
   const files = Array.from(event.target.files || [])
 
   if (files.length === 0) {
@@ -38,15 +42,33 @@ function handleFileChange(event) {
     return
   }
 
-  // DO NOT fully reset first (important for mobile stability)
-  files.forEach(file => {
-    pictures.value.push(file)
-    previewImages.value.push(URL.createObjectURL(file))
-  })
+  for (const file of files) {
+
+    try {
+
+      // compress image BEFORE upload
+      const compressedFile = await imageCompression(file, {
+        maxSizeMB: 1, // max 1MB
+        maxWidthOrHeight: 1200,
+        useWebWorker: true
+      })
+
+      pictures.value.push(compressedFile)
+
+      previewImages.value.push(
+          URL.createObjectURL(compressedFile)
+      )
+
+      console.log('Original:', file.size)
+      console.log('Compressed:', compressedFile.size)
+
+    } catch (error) {
+      console.error('Compression error:', error)
+    }
+  }
 
   console.log('Selected files:', pictures.value)
-}
-function removeImage(index) {
+}function removeImage(index) {
   pictures.value.splice(index, 1)
   previewImages.value.splice(index, 1)
 }
@@ -125,10 +147,20 @@ const submitMilestone = async () => {
   try {
     if (isEditing.value) {
       // Editing existing milestone
-      await api.post(`/milestone/update/${editId.value}`, formData)
+      await api.post(`/milestone/update/${editId.value}`, formData,{
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        },
+        timeout: 120000
+      })
     } else {
       // Creating new milestone
-      await api.post(`/milestone/${props.seasonId}`, formData)
+      await api.post(`/milestone/${props.seasonId}`, formData,{
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        },
+        timeout: 120000
+      })
     }
 
     await fetchMilestones()
