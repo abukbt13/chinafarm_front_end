@@ -12,7 +12,7 @@ onMounted(() => {
   <Navbar />
   <div class="d-flex" style="min-height: 100vh;">
     <!-- Offcanvas Sidebar for Mobile -->
-    <div class="offcanvas offcanvas-start bg-success text-white" tabindex="-1" id="sidebarOffcanvas">
+    <div style="background: #267026;" class="offcanvas offcanvas-start text-white" tabindex="-1" id="sidebarOffcanvas">
       <div class="offcanvas-body">
         <button class="btn  d-md-none float-end" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarOffcanvas">
           <i class="bi bi-x-lg text-white"></i>
@@ -35,7 +35,7 @@ onMounted(() => {
     </div>
 
     <!-- Static Sidebar for Desktop -->
-    <nav class="d-none sticky-top d-md-block bg-success text-white p-3 vh-100" style="width: 250px;">
+    <nav  class="d-none  sticky-top d-md-block  text-white p-3 vh-100" style="width: 250px;background: #267026;">
       <ul class="nav flex-column">
         <li class="nav-item mb-2"  data-bs-dismiss="offcanvas">
           <router-link class="nav-link text-white"  to="/user">Home</router-link>

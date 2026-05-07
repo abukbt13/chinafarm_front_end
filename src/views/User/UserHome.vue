@@ -21,48 +21,50 @@ onMounted( () => {
       <div class="row g-4">
         <!-- Active Crops -->
         <div class="col-md-6 col-lg-4">
-          <div class="card shadow-sm border-0 summary-card">
+          <div class="card shadow-sm border-0 summary-card" style="background: #267026; color: white;">
+            <router-link to="/user/farm-projects" class="text-decoration-none text-white">
             <div class="card-body text-center" >
-              <h5 class="card-title text-success fw-bold">🌱 Active Projects</h5>
-              <p class="display-6 fw-semibold text-success mb-2 text-center">
+              <h5 class="card-title fw-bold">🌱 Active Projects</h5>
+              <p class="display-6 fw-semibold mb-2 text-center">
                 {{ summary.activecrops }}
               </p>
-              <router-link to="/user/farm-projects" class="btn btn-outline-primary btn-sm text-center">
-                View Projects
-              </router-link>
+                <span>View Projects</span> <i class="bi bi-arrow-right float-end"></i>
             </div>
+            </router-link>
           </div>
         </div>
 
         <!-- My Blogs -->
         <div class="col-md-6 col-lg-4">
-          <div class="card shadow-sm border-0 summary-card">
-            <div class="card-body text-center">
-              <h5 class="card-title text-success fw-bold">✍️ My Blogs</h5>
-              <p class="display-6 fw-semibold text-dark mb-2">
+          <div class="card shadow-sm border-0 summary-card" style="background: #267026; color: white;">
+            <router-link to="/user/blogs" class="text-decoration-none text-white">
+            <div class="card-body text-center" >
+              <h5 class="card-title fw-bold">✍️ My Blogs</h5>
+              <p class="display-6 fw-semibold mb-2 text-center">
                 {{ summary.blogs }}
               </p>
-              <router-link to="/user/blogs" class="btn btn-outline-white btn-sm">
-                View Blogs
-              </router-link>
+                <span>View Blogs</span> <i class="bi bi-arrow-right float-end"></i>
             </div>
+            </router-link>
           </div>
         </div>
 
         <!-- My Suggestions -->
         <div class="col-md-6 col-lg-4">
-          <div class="card shadow-sm border-0 summary-card">
-            <div class="card-body text-center">
-              <h5 class="card-title text-warning fw-bold">💡 My Suggestions</h5>
-              <p class="display-6 fw-semibold text-dark mb-2">
+          <div class="card shadow-sm border-0 summary-card" style="background: #267026; color: white;">
+            <router-link to="/user/crop-suggestion" class="text-decoration-none text-white">
+            <div class="card-body text-center" >
+              <h5 class="card-title fw-bold">💡 My Suggestions</h5>
+              <p class="display-6 fw-semibold mb-2 text-center">
                 {{ summary.suggestions }}
               </p>
-              <router-link to="/user/crop-suggestion" class="btn btn-outline-warning btn-sm">
-                View Suggestions
-              </router-link>
+                <span>View Suggestions</span> <i class="bi bi-arrow-right float-end"></i>
             </div>
+            </router-link>
           </div>
         </div>
+
+
       </div>
     </div>
 
