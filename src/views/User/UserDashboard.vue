@@ -14,6 +14,9 @@ onMounted(() => {
     <!-- Offcanvas Sidebar for Mobile -->
     <div class="offcanvas offcanvas-start bg-success text-white" tabindex="-1" id="sidebarOffcanvas">
       <div class="offcanvas-body">
+        <button class="btn  d-md-none float-end" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarOffcanvas">
+          <i class="bi bi-x-lg text-white"></i>
+        </button>
         <ul class="nav flex-column">
           <li class="nav-item mb-2"  data-bs-dismiss="offcanvas">
             <router-link class="nav-link text-white"  to="/user">Home</router-link>

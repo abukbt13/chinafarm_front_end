@@ -45,11 +45,12 @@ onMounted(()=>{
     <div class="container">
       <!-- Logo -->
       <a href="/" class="logo">🌱 FarmTracker</a>
-
       <!-- Hamburger -->
       <button class="menu-btn" @click="toggleNav">
         <span v-if="isCollapsed">☰</span>
-        <span v-else>✕</span>
+        <span v-else>
+          <i class="bi bi-x-lg"></i>
+        </span>
       </button>
 
       <!-- Links -->
@@ -57,23 +58,22 @@ onMounted(()=>{
         <ul>
           <li><router-link to="/">Home</router-link></li>
           <li><router-link to="/blogs">Blogs</router-link></li>
-          <li><router-link to="/contact">Contact</router-link></li>
+          <li><router-link to="/contact">Contacts</router-link></li>
         </ul>
 
         <!-- Auth Section -->
         <div class="auth-section">
-          <template v-if="isLoggedIn">
+          <div v-if="isLoggedIn">
             <!-- User dropdown -->
             <div class="user-icon">
               <i class="bi bi-person-circle fs-4"></i>
               <div class="dropdown">
-
                 <router-link to="/user">Dashboard</router-link>
                 <router-link to="/user/profile">Profile</router-link>
                 <a @click.prevent="logout" class="dropdown-item" href="#">Logout</a>
               </div>
             </div>
-          </template>
+          </div>
           <template v-else>
             <router-link to="/login" class="login-btn">Sign In</router-link>
           </template>
@@ -88,7 +88,6 @@ onMounted(()=>{
   background-color: #267026;
   color: white;
   padding: 0.8rem 1rem;
-  position: relative;
 }
 
 .container {
@@ -160,8 +159,8 @@ onMounted(()=>{
   position: absolute;
   top: 30px;
   right: 0;
-  background: white;
-  color: black;
+  margin-bottom: 1rem;
+  background: #267026;
   border-radius: 4px;
   display: flex;
   flex-direction: column;
@@ -171,24 +170,38 @@ onMounted(()=>{
 
 .user-icon:hover .dropdown {
   display: flex;
+
 }
 
 .user-icon .dropdown a {
   padding: 0.5rem;
   text-decoration: none;
-  color: #267026;
+  color: white;
 }
 
 .user-icon .dropdown a:hover {
-  background-color: #e0f0e0;
+  border: 1px solid;
+  outline-color: red;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
+  .user-icon .dropdown {
+    position: static;
+    top: 30px;
+    right: 0;
+    margin-bottom: 1rem;
+    background: #267026;
+    color: black;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: row;
+    min-width: 120px;
+    display: none;
+  }
   .menu-btn {
     display: block;
   }
-
   .nav-links {
     flex-direction: column;
     width: 100%;
