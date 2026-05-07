@@ -30,22 +30,22 @@
 
   <!-- triggered contents -->
   <div class="tab-content" id="myTabContent">
-    <div class="tab-pane fade show active p-3" id="overview-tab-pane" role="tabpanel" aria-labelledby="overview-tab" tabindex="0">
+    <div class="tab-pane fade show active " id="overview-tab-pane" role="tabpanel" aria-labelledby="overview-tab" tabindex="0">
      <OverviewTab :season_id="seasonId" />
     </div>
 
 <!--    Progress Tab-->
-    <div class="tab-pane fade p-3" id="Progresses-tab-pane" role="tabpanel" aria-labelledby="Progresses-tab" tabindex="0">
+    <div class="tab-pane fade " id="Progresses-tab-pane" role="tabpanel" aria-labelledby="Progresses-tab" tabindex="0">
       <ProgressTab :season-id="seasonId" />
     </div>
 
 <!--    Expense Tab-->
-    <div class="tab-pane fade p-3" id="expense-tab-pane" role="tabpanel" aria-labelledby="expense-tab" tabindex="0">
+    <div class="tab-pane fade " id="expense-tab-pane" role="tabpanel" aria-labelledby="expense-tab" tabindex="0">
       <ExpenseTab :season-id="seasonId" />
     </div>
 
 <!--    Returns tab-->
-    <div class="tab-pane fade p-3" id="returns-tab-pane" role="tabpanel" aria-labelledby="returns-tab" tabindex="0">
+    <div class="tab-pane fade " id="returns-tab-pane" role="tabpanel" aria-labelledby="returns-tab" tabindex="0">
       <ReturnsTab :season-id="seasonId" />
     </div>
   </div>

@@ -8,8 +8,8 @@
       <div class="col-12 col-md-6 mb-4 mb-md-0 d-flex flex-column justify-content-center">
         <h1 class="display-5 fw-bold text-success">Mytracker  System</h1>
         <p class="lead mt-3">
-          Take control of your projects with MyTracker.
-          Track expenses, monitor returns, and gain powerful visual insights to make better decisions        </p>
+          Take control of your farm projects with MyTracker.
+          Track expenses, monitor returns, and gain powerful visual insights to make better decisions bringing success to your farming.        </p>
         <router-link to="/user">
           <button class="btn btn-success mt-4 shadow">Get started</button>
         </router-link>

@@ -66,7 +66,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="p-3">
+  <div class="">
     <h4 class="my-4">
       Crop returns
       <button class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#return">Add Return</button>
@@ -146,7 +146,7 @@ onMounted(() => {
 
     <!-- Table -->
     <div v-else>
-      <table class="table table-bordered table-striped">
+      <table class="table table-bordered table-striped table-responsive">
         <thead class="table-light">
 
         <tr>

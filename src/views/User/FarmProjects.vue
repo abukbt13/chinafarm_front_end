@@ -125,12 +125,12 @@ onMounted(() => {
           <div
               class="card-body"
               :class="{
-    'bg-primary': item.status === 'completed',
-    'bg-danger': item.status === 'overdue',
-    'bg-warning text-dark': item.status === 'pending'
-  }"
+                'bg-primary': item.status === 'completed',
+                'bg-danger': item.status === 'overdue',
+                'bg-warning text-dark': item.status === 'pending'
+              }"
               :style="{
-    backgroundColor: item.status === 'active' ? '#267026' : ''
+               backgroundColor: item.status === 'active' ? '#ddd' : ''
   }"
           >
             <i class="bi bi-arrow-right-circle float-end" style="font-size: 2rem;"></i>

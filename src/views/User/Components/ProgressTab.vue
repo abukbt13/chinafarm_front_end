@@ -252,11 +252,16 @@ onMounted( () => {
             <div class="modal-body">
               <div class="mb-3">
                 <label class="form-label">Activity</label>
-                <input v-model="activity" type="text" placeholder="enter activity like Weeding" class="form-control" required />
+                <select v-model="activity" class="form-control">
+                  <option disabled value="">Select Activity</option>
+                  <option value="Farm Visit">Farm Visit</option>
+                  <option value="At Work">At Work</option>
+                  <option value="Passing By">Passing By</option>
+                </select>
               </div>
               <div class="mb-3">
                 <label class="form-label">Description</label>
-                <textarea v-model="description" class="form-control" rows="3" required />
+                <textarea v-model="description" class="form-control" rows="3" />
               </div>
               <div class="mb-3">
                 <label class="form-label">Pictures</label>

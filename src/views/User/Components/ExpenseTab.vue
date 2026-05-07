@@ -75,7 +75,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="p-3">
+  <div class="">
     <!-- New Expense Form -->
     <div class="modal fade" id="expense" tabindex="-1" aria-labelledby="expense" aria-hidden="true">
       <div class="modal-dialog">
@@ -157,7 +157,7 @@ onMounted(() => {
 
     <!-- Table -->
     <div v-else>
-      <table class="table table-bordered table-striped">
+      <table class="table table-bordered table-striped table-responsive">
         <thead class="table-light">
         <tr>
           <th colspan="5"> <h4>Expense View<button class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#expense">Add Expense</button>  </h4> </th>
