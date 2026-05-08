@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue'
 import api from "../../../composables/axios.js";
 import Swal from 'sweetalert2'
-import {storage_link} from "../../../composables/storage_link.js";
+import { storage_link } from "../../../composables/storage_link.js";
 import imageCompression from 'browser-image-compression'
 
 const { storage_url } = storage_link()
@@ -10,6 +10,7 @@ const { storage_url } = storage_link()
 const props = defineProps({
   seasonId: [String, Number]
 })
+
 const milestones = ref([])
 const pictures = ref([])
 const activity = ref('')
@@ -19,7 +20,30 @@ const isEditing = ref(false)
 const currentPictures = ref([])
 const editId = ref(null)
 
+const previewImages = ref([])
+const fileInput = ref(null)
 
+/*
+|--------------------------------------------------------------------------
+| FULLSCREEN IMAGE VIEWER
+|--------------------------------------------------------------------------
+*/
+
+const selectedImage = ref(null)
+
+const openImage = (image) => {
+  selectedImage.value = image
+}
+
+const closeImage = () => {
+  selectedImage.value = null
+}
+
+/*
+|--------------------------------------------------------------------------
+| FETCH MILESTONES
+|--------------------------------------------------------------------------
+*/
 
 const fetchMilestones = async () => {
   try {
@@ -30,25 +54,27 @@ const fetchMilestones = async () => {
   }
 }
 
-const previewImages = ref([]) // For preview URLs
-
+/*
+|--------------------------------------------------------------------------
+| IMAGE UPLOAD + COMPRESSION
+|--------------------------------------------------------------------------
+*/
 
 async function handleFileChange(event) {
 
   const files = Array.from(event.target.files || [])
 
-  if (files.length === 0) {
-    console.log('No files selected')
-    return
-  }
+  if (files.length === 0) return
+
+  pictures.value = []
+  previewImages.value = []
 
   for (const file of files) {
 
     try {
 
-      // compress image BEFORE upload
       const compressedFile = await imageCompression(file, {
-        maxSizeMB: 1, // max 1MB
+        maxSizeMB: 1,
         maxWidthOrHeight: 1200,
         useWebWorker: true
       })
@@ -59,44 +85,83 @@ async function handleFileChange(event) {
           URL.createObjectURL(compressedFile)
       )
 
-      console.log('Original:', file.size)
-      console.log('Compressed:', compressedFile.size)
-
     } catch (error) {
       console.error('Compression error:', error)
     }
   }
+}
 
-  console.log('Selected files:', pictures.value)
-}function removeImage(index) {
+/*
+|--------------------------------------------------------------------------
+| REMOVE PREVIEW IMAGE
+|--------------------------------------------------------------------------
+*/
+
+function removeImage(index) {
+
   pictures.value.splice(index, 1)
+
   previewImages.value.splice(index, 1)
 }
-const fileInput = ref(null)
-function clearForm(){
-  isEditing.value= false
-  activity.value=''
-  date.value =''
+
+/*
+|--------------------------------------------------------------------------
+| CLEAR FORM
+|--------------------------------------------------------------------------
+*/
+
+function clearForm() {
+
+  isEditing.value = false
+
+  activity.value = ''
+
+  date.value = ''
+
   editId.value = null
-  description.value=''
-  // Clear file input
+
+  description.value = ''
+
+  currentPictures.value = []
+
   if (fileInput.value) {
-    fileInput.value.value = '' // This resets the file input
+    fileInput.value.value = ''
   }
+
   pictures.value = []
-  previewImages.value= []
+
+  previewImages.value = []
 }
 
-const EditPost = (data) =>{
+/*
+|--------------------------------------------------------------------------
+| EDIT
+|--------------------------------------------------------------------------
+*/
+
+const EditPost = (data) => {
+
   editId.value = data.id
-  isEditing.value=true
+
+  isEditing.value = true
+
   activity.value = data.activity
+
   description.value = data.description
+
   date.value = data.date
+
   currentPictures.value = data.pictures
 }
 
+/*
+|--------------------------------------------------------------------------
+| DELETE
+|--------------------------------------------------------------------------
+*/
+
 const DeleteMilestone = async (data) => {
+
   Swal.fire({
     title: 'Are you sure?',
     text: 'This milestone will be permanently deleted!',
@@ -106,9 +171,13 @@ const DeleteMilestone = async (data) => {
     cancelButtonColor: '#d33',
     confirmButtonText: 'Yes, delete it!'
   }).then(async (result) => {
+
     if (result.isConfirmed) {
+
       try {
+
         await api.post(`/milestone/delete/${data}`)
+
         await fetchMilestones()
 
         Swal.fire(
@@ -116,7 +185,9 @@ const DeleteMilestone = async (data) => {
             'The milestone has been deleted.',
             'success'
         )
+
       } catch (error) {
+
         Swal.fire(
             'Error!',
             'Something went wrong while deleting the milestone.',
@@ -127,144 +198,300 @@ const DeleteMilestone = async (data) => {
   })
 }
 
+/*
+|--------------------------------------------------------------------------
+| SUBMIT
+|--------------------------------------------------------------------------
+*/
 
 const submitMilestone = async () => {
+
   const formData = new FormData()
+
   formData.append('activity', activity.value)
+
   formData.append('date', date.value)
+
   formData.append('description', description.value)
 
-  // append new pictures (uploaded during editing)
   pictures.value.forEach(file => {
     formData.append('pictures[]', file)
   })
 
-  // append current pictures (to keep them in DB if not deleted)
   currentPictures.value.forEach(pic => {
     formData.append('current_pictures[]', pic)
   })
 
   try {
+
     if (isEditing.value) {
-      // Editing existing milestone
-      await api.post(`/milestone/update/${editId.value}`, formData,{
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        },
-        timeout: 120000
-      })
+
+      await api.post(
+          `/milestone/update/${editId.value}`,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          }
+      )
+
     } else {
-      // Creating new milestone
-      await api.post(`/milestone/${props.seasonId}`, formData,{
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        },
-        timeout: 120000
-      })
+
+      await api.post(
+          `/milestone/${props.seasonId}`,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          }
+      )
     }
 
     await fetchMilestones()
+
     clearForm()
 
-    Swal.fire(
-        'Success!',
-        isEditing.value ? 'Milestone updated successfully!' : 'Milestone created successfully!',
-        'success'
-    )
+    Swal.fire({
+      icon: 'success',
+      title: 'Success!',
+      text: isEditing.value
+          ? 'Milestone updated successfully!'
+          : 'Milestone created successfully!'
+    })
+
   } catch (err) {
-    console.error('Error submitting milestone:', err)
-    Swal.fire('Error!', 'Something went wrong.', 'error')
+
+    console.error(err)
+
+    Swal.fire({
+      icon: 'error',
+      title: 'Error!',
+      text: 'Something went wrong.'
+    })
   }
 }
-onMounted( () => {
+
+onMounted(() => {
   fetchMilestones()
 })
 </script>
 
 <template>
+
   <div>
+
     <div class="d-flex justify-content-between align-items-center mb-3">
       <h4>Progress Milestones</h4>
-      <button  @click="clearForm()"  class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addMilestoneModal">
+
+      <button
+          class="btn btn-primary"
+          data-bs-toggle="modal"
+          data-bs-target="#addMilestoneModal"
+      >
         Add Milestone
       </button>
     </div>
 
+    <!-- EMPTY -->
+
     <div v-if="milestones.length === 0" class="text-muted">
       <h2>No milestone found!</h2>
     </div>
+
+    <!-- LIST -->
+
     <ul v-else class="list-group">
-      <li v-for="milestone in milestones" :key="milestone.id" class="list-group-item">
+
+      <li
+          v-for="milestone in milestones"
+          :key="milestone.id"
+          class="list-group-item"
+      >
+
         <div class="d-flex">
-          <div class="">
-            <h2>Description</h2>
+
+          <div>
+            <h5>Description</h5>
+
             <p>{{ milestone.description }}</p>
+
             <strong>{{ milestone.date }}</strong>
           </div>
-          <!--         operation buttons-->
-          <div class="">
-            <div class="dropdown post-menu d-flex position-absolute" style="right: 1rem; top: 1rem;">
-              <!-- Three dots button -->
-              <button class="btn btn-link p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="bi bi-three-dots-vertical fs-4"></i>
-              </button>
 
-              <!-- Dropdown menu -->
-              <ul class="dropdown-menu dropdown-menu-end shadow">
-                <li>
-                 <span data-bs-toggle="modal" data-bs-target="#addMilestoneModal" @click="EditPost(milestone)" class="dropdown-item d-flex align-items-center">
-                   <i class="bi bi-pencil-square me-2 text-primary"></i> Edit Post
-                 </span>
-                </li>
-                <li>
-                 <span @click="DeleteMilestone(milestone.id)"  class="dropdown-item d-flex align-items-center text-danger">
-                   <i class="bi bi-trash3 me-2"></i> Delete Post
-                 </span>
-                </li>
-              </ul>
-            </div>
+          <!-- DROPDOWN -->
 
+          <div class="dropdown ms-auto">
+
+            <button
+                class="btn btn-link p-0"
+                type="button"
+                data-bs-toggle="dropdown"
+            >
+              <i class="bi bi-three-dots-vertical fs-4"></i>
+            </button>
+
+            <ul class="dropdown-menu dropdown-menu-end shadow">
+
+              <li>
+                <span
+                    data-bs-toggle="modal"
+                    data-bs-target="#addMilestoneModal"
+                    @click="EditPost(milestone)"
+                    class="dropdown-item d-flex align-items-center"
+                >
+                  <i class="bi bi-pencil-square me-2 text-primary"></i>
+                  Edit Post
+                </span>
+              </li>
+
+              <li>
+                <span
+                    @click="DeleteMilestone(milestone.id)"
+                    class="dropdown-item d-flex align-items-center text-danger"
+                >
+                  <i class="bi bi-trash3 me-2"></i>
+                  Delete Post
+                </span>
+              </li>
+
+            </ul>
           </div>
         </div>
 
-        <div class="mt-2 row row-cols-1 row-cols-lg-2 g-2">
-          <div v-for="pic in milestone.pictures" :key="pic" class="col">
+        <!-- IMAGES -->
+
+        <div class="mt-3 row row-cols-1 row-cols-lg-2 g-2">
+
+          <div
+              v-for="pic in milestone.pictures"
+              :key="pic"
+              class="col"
+          >
+
             <img
                 :src="storage_url + pic"
                 :alt="pic"
-                class="img-thumbnail w-100"
+                class="img-thumbnail w-100 preview-image"
+                @click="openImage(storage_url + pic)"
             />
+
           </div>
         </div>
 
       </li>
     </ul>
 
-    <!-- Modal -->
-    <div class="modal fade" id="addMilestoneModal" tabindex="-1" aria-hidden="true">
+    <!-- FULLSCREEN IMAGE VIEWER -->
+
+    <div
+        v-if="selectedImage"
+        class="image-overlay"
+        @click="closeImage"
+    >
+
+      <button
+          class="close-btn"
+          @click.stop="closeImage"
+      >
+        ✕
+      </button>
+
+      <img
+          :src="selectedImage"
+          class="fullscreen-image"
+          @click.stop
+      />
+
+    </div>
+
+    <!-- MODAL -->
+
+    <div
+        class="modal fade"
+        id="addMilestoneModal"
+        tabindex="-1"
+        aria-hidden="true"
+    >
+
       <div class="modal-dialog modal-lg">
+
         <div class="modal-content">
+
           <form @submit.prevent="submitMilestone">
+
             <div class="modal-header">
-              <h5 class="modal-title">{{ isEditing ? "Editing Milestone " : "New Milestone"}}</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" id="closeModalBtn" />
+
+              <h5 class="modal-title">
+                {{ isEditing ? "Editing Milestone" : "New Milestone" }}
+              </h5>
+
+              <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+              />
             </div>
+
             <div class="modal-body">
+
+              <!-- ACTIVITY -->
+
               <div class="mb-3">
-                <label class="form-label">Activity</label>
-                <select v-model="activity" class="form-control">
-                  <option disabled value="">Select Activity</option>
-                  <option value="Farm Visit">Farm Visit</option>
-                  <option value="At Work">At Work</option>
-                  <option value="Passing By">Passing By</option>
+
+                <label class="form-label">
+                  Activity
+                </label>
+
+                <select
+                    v-model="activity"
+                    required
+                    class="form-control"
+                >
+
+                  <option disabled value="">
+                    Select Activity
+                  </option>
+
+                  <option value="Farm Visit">
+                    Farm Visit
+                  </option>
+
+                  <option value="At Work">
+                    At Work
+                  </option>
+
+                  <option value="Passing By">
+                    Passing By
+                  </option>
+
                 </select>
               </div>
+
+              <!-- DESCRIPTION -->
+
               <div class="mb-3">
-                <label class="form-label">Description</label>
-                <textarea v-model="description" class="form-control" rows="3" />
+
+                <label class="form-label">
+                  Description
+                </label>
+
+                <textarea
+                    v-model="description"
+                    class="form-control"
+                    rows="3"
+                />
               </div>
+
+              <!-- PICTURES -->
+
               <div class="mb-3">
-                <label class="form-label">Pictures</label>
+
+                <label class="form-label">
+                  Pictures
+                </label>
+
                 <input
                     type="file"
                     multiple
@@ -274,100 +501,147 @@ onMounted( () => {
                     class="form-control mb-3"
                 />
 
-                <!-- Image preview section -->
+                <!-- PREVIEW -->
+
                 <div class="d-flex flex-wrap gap-3">
+
                   <div
                       v-for="(img, index) in previewImages"
                       :key="index"
                       class="position-relative rounded shadow-sm overflow-hidden border"
-                      style="width: 120px; height: 120px;"
+                      style="width:120px;height:120px;"
                   >
-                    <!-- Image -->
+
                     <img
                         :src="img"
-                        alt="Preview"
                         class="w-100 h-100"
-                        style="object-fit: cover;"
+                        style="object-fit:cover;"
                     />
 
-                    <!-- Remove button -->
                     <button
                         type="button"
                         class="btn btn-sm btn-light position-absolute top-0 end-0 m-1 rounded-circle shadow"
-                        style="width: 28px; height: 28px; padding: 0; line-height: 1;"
+                        style="width:28px;height:28px;padding:0;"
                         @click="removeImage(index)"
                     >
                       ✕
                     </button>
+
                   </div>
                 </div>
 
-               <div class="" v-if="isEditing">
-                 <h2 class="text-center">Uploaded Pictures</h2>
-                 <div class="" style="display: flex;flex-direction: row;">
-                    <div  v-for="pic in currentPictures" :key="pic" class="col">
-                   <img
-                       style=" width: 200px; height: 200px;"
-                       :src="storage_url + pic"
-                       :alt="pic"
-                       class="img-thumbnail"
-                   />
-                 </div>
-                 </div>
-               </div>
+                <!-- EXISTING -->
+
+                <div v-if="isEditing" class="mt-4">
+
+                  <h5 class="text-center">
+                    Uploaded Pictures
+                  </h5>
+
+                  <div class="d-flex flex-wrap gap-2">
+
+                    <div
+                        v-for="pic in currentPictures"
+                        :key="pic"
+                    >
+
+                      <img
+                          :src="storage_url + pic"
+                          :alt="pic"
+                          class="img-thumbnail"
+                          style="width:200px;height:200px;object-fit:cover;"
+                      />
+
+                    </div>
+
+                  </div>
+                </div>
 
               </div>
+
+              <!-- DATE -->
+
               <div class="mb-3">
-                <label class="form-label">Date</label>
-                <input v-model="date" type="date" class="form-control" required />
+
+                <label class="form-label">
+                  Date
+                </label>
+
+                <input
+                    v-model="date"
+                    type="date"
+                    class="form-control"
+                    required
+                />
               </div>
-              <button type="submit" class="btn btn-success">
+
+              <!-- BUTTON -->
+
+              <button
+                  type="submit"
+                  class="btn btn-success"
+              >
                 {{ isEditing ? 'Edit Milestone' : 'Add Milestone' }}
               </button>
+
             </div>
+
           </form>
+
         </div>
+
       </div>
+
     </div>
+
   </div>
+
 </template>
 
 <style>
-.edit-icon-wrapper {
-  position: absolute;
-  right: 2rem;
-  display: inline-block;
-  cursor: pointer;
-  font-size: 2rem;
-  color: #555;
-  transition: color 0.3s ease;
+
+.preview-image{
+  cursor:pointer;
+  transition:0.3s;
 }
 
-.edit-icon-wrapper:hover {
-  color: #0d6efd; /* Bootstrap primary blue */
+.preview-image:hover{
+  transform:scale(1.02);
 }
 
-.tooltip-text {
-  visibility: hidden;
-  opacity: 0;
-  width: max-content;
-  background-color: #333;
-  color: #fff;
-  text-align: center;
-  padding: 4px 8px;
-  border-radius: 6px;
-  position: absolute;
-  right: 100%; /* show on left of icon */
-  top: 50%;
-  transform: translateY(-50%);
-  white-space: nowrap;
-  font-size: 0.85rem;
-  transition: opacity 0.3s;
+.image-overlay{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.9);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+  padding:20px;
 }
 
-.edit-icon-wrapper:hover .tooltip-text {
-  visibility: visible;
-  opacity: 1;
+.fullscreen-image{
+  max-width:100%;
+  max-height:100%;
+  object-fit:contain;
+  border-radius:10px;
+}
+
+.close-btn{
+  position:absolute;
+  top:20px;
+  right:20px;
+  background:white;
+  border:none;
+  width:45px;
+  height:45px;
+  border-radius:50%;
+  font-size:22px;
+  font-weight:bold;
+  cursor:pointer;
 }
 
 </style>
