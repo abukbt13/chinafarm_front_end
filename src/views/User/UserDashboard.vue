@@ -27,9 +27,7 @@ onMounted(() => {
           <li class="nav-item mb-2"  data-bs-dismiss="offcanvas">
             <router-link class="nav-link text-white"  to="/user/crop-suggestion">My Crop Suggestions</router-link>
           </li>
-          <li class="nav-item mb-2"  data-bs-dismiss="offcanvas">
-            <router-link class="nav-link text-white"  to="/user/blogs">My Blogs</router-link>
-          </li>
+
         </ul>
       </div>
     </div>
@@ -46,9 +44,7 @@ onMounted(() => {
         <li class="nav-item mb-2"  data-bs-dismiss="offcanvas">
           <router-link class="nav-link text-white"  to="/user/crop-suggestion">My Crop Suggestions</router-link>
         </li>
-        <li class="nav-item mb-2"  data-bs-dismiss="offcanvas">
-          <router-link class="nav-link text-white"  to="/user/blogs">My Blogs</router-link>
-        </li>
+
       </ul>
     </nav>
 

@@ -7,7 +7,7 @@
       <div class="row">
         <!-- About Column -->
         <div class="col-md-4 mb-4">
-          <h5 class="text-light">🌱 Farm Tracker</h5>
+          <h5 class="text-light">My Tracker</h5>
           <p>
             Agricultural management is at the heart of what we do. We provide tools, knowledge, and support from farm planning to fresh produce, empowering farmers and communities to thrive.
           </p>
@@ -37,7 +37,8 @@
 
       <!-- Footer Bottom -->
       <div class="text-center border-top border-white pt-3 mt-4">
-        <small>&copy; 2025 FarmTracker. Helping farmers grow better, together.</small>
+        <small>&copy; 2025 MyTracker. Helping farmers grow better, together.</small>
+        <div>Designed By China Farm <span class="text-primary">Phone</span>:0728548760  <span class="text-primary">Email</span>abukbt13@gmail.com</div>
       </div>
     </div>
   </footer>

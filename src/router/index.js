@@ -1,14 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../views/Home.vue';
-
-import axios from 'axios'
 import adminRoutes from './userRoutes.js';
 import userRoutes from './adminRoutes.js';
 import auth from './auth.js';
 import api from "../composables/axios.js";
-import LatestBlogs from "../components/LatestBlogs.vue";
-import Blogs from "../components/Blogs.vue";
-import ReadBlogs from "../components/ReadBlogs.vue";
 import Profile from "../views/Profile.vue";
 import AboutUs from "../components/AboutUs.vue";
 
@@ -29,15 +24,8 @@ const routes = [
     {
         path: '/about-us',
         component: AboutUs
-    },
-    {
-        path: '/blogs',
-        component: Blogs,
-    },
-    {
-        path: '/blog/:id',
-        component: ReadBlogs,
-    },
+    }
+
 
 
 ];

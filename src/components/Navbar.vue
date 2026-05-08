@@ -57,8 +57,7 @@ onMounted(()=>{
       <div class="nav-links" :class="{ open: !isCollapsed }">
         <ul>
           <li><router-link to="/">Home</router-link></li>
-          <li><router-link to="/blogs">Blogs</router-link></li>
-          <li><router-link to="/contact">Contacts</router-link></li>
+          <li><router-link to="/about-us">Contacts</router-link></li>
         </ul>
 
         <!-- Auth Section -->
