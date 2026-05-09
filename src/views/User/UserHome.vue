@@ -2,7 +2,10 @@
 
 import {onMounted, ref} from "vue";
 import api from "../../composables/axios.js";
+import {auth} from "../../composables/auth.js";
 const summary =ref([])
+
+const { user, isLoggedIn,AuthUser} = auth()
 const fetchSummary = async () => {
   try {
     const res = await api.get('farming-projects/count')
@@ -12,6 +15,7 @@ const fetchSummary = async () => {
   }
 }
 onMounted( () => {
+  AuthUser()
   fetchSummary()
 })
 </script>
@@ -37,7 +41,7 @@ onMounted( () => {
 
 
         <!-- My Suggestions -->
-        <div class="col-md-6 col-lg-4">
+        <div v-if="user?.role === 'admin'" class="col-md-6 col-lg-4">
           <div class="card shadow-sm border-0 summary-card" style="background: #267026; color: white;">
             <router-link to="/user/crop-suggestion" class="text-decoration-none text-white">
             <div class="card-body text-center" >
@@ -46,6 +50,21 @@ onMounted( () => {
                 {{ summary.suggestions }}
               </p>
                 <span>View Suggestions</span> <i class="bi bi-arrow-right float-end"></i>
+            </div>
+            </router-link>
+          </div>
+        </div>
+
+
+        <!-- Admin view -->
+        <div class="col-md-6 col-lg-4">
+          <div class="card shadow-sm border-0 summary-card" style="background: #267026; color: white;">
+            <router-link to="/user/crop-suggestion" class="text-decoration-none text-white">
+            <div class="card-body text-center" >
+              <h5 class="card-title fw-bold">Users View</h5>
+              <p class="display-6 fw-semibold mb-2 text-center">
+                <router-link to="/admin">View users</router-link>
+              </p>
             </div>
             </router-link>
           </div>

@@ -5,6 +5,7 @@ import api from '../composables/axios'
 import router from "../router/index.js";
 const user = ref(null)
 const isLoggedIn = ref(false)
+const isAdmin = ref(false)
 
 
 const token = localStorage.getItem('token')
@@ -22,6 +23,9 @@ export function auth() {
             const response = await api.get('user')
             user.value = response.data
             isLoggedIn.value = true
+            if(user.role === 'admin'){
+                isAdmin.value=true
+            }
         } catch (error) {
             console.error('Failed to fetch user:', error)
             // await router.push('/login')
@@ -33,6 +37,7 @@ export function auth() {
     return {
         user,
         isLoggedIn,
+        isAdmin,
         AuthUser,
     }
 }
