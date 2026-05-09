@@ -41,7 +41,7 @@ onMounted( () => {
 
 
         <!-- My Suggestions -->
-        <div v-if="user?.role === 'admin'" class="col-md-6 col-lg-4">
+        <div  class="col-md-6 col-lg-4">
           <div class="card shadow-sm border-0 summary-card" style="background: #267026; color: white;">
             <router-link to="/user/crop-suggestion" class="text-decoration-none text-white">
             <div class="card-body text-center" >
@@ -58,7 +58,7 @@ onMounted( () => {
 
         <!-- Admin view -->
         <div class="col-md-6 col-lg-4">
-          <div class="card shadow-sm border-0 summary-card" style="background: #267026; color: white;">
+          <div v-if="user?.role === 'admin'" class="card shadow-sm border-0 summary-card" style="background: #267026; color: white;">
             <router-link to="/user/crop-suggestion" class="text-decoration-none text-white">
             <div class="card-body text-center" >
               <h5 class="card-title fw-bold">Users View</h5>
