@@ -9,6 +9,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@capacitor/android": "^8.3.3",
+    "@capacitor/app": "^8.1.0",
+    "@capacitor/cli": "^7.6.4",
+    "@capacitor/core": "^8.3.3",
     "@tiptap/extension-bold": "^3.4.2",
     "@tiptap/extension-bullet-list": "^3.4.2",
     "@tiptap/extension-heading": "^3.4.2",
@@ -26,6 +30,7 @@
     "vue-router": "^4.5.1"
   },
   "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
     "@vitejs/plugin-vue": "^5.2.3",
     "vite": "^6.3.5"
   }

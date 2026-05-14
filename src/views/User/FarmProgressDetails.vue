@@ -24,7 +24,7 @@
       <button class="nav-link" id="expense-tab" data-bs-toggle="tab" data-bs-target="#expense-tab-pane" type="button" role="tab" aria-controls="expense-tab-pane" aria-selected="false">Expenses</button>
     </li>
     <li class="nav-item" role="presentation">
-      <button class="nav-link" id="expense-tab" data-bs-toggle="tab" data-bs-target="#returns-tab-pane" type="button" role="tab" aria-controls="expense-tab-pane" aria-selected="false">Returns</button>
+      <button class="nav-link" id="expense-tab" data-bs-toggle="tab" data-bs-target="#returns-tab-pane" type="button" role="tab" aria-controls="expense-tab-pane" aria-selected="false">Sales</button>
     </li>
   </ul>
 

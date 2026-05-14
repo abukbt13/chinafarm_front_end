@@ -13,11 +13,13 @@ const returnItems = ref([])
 const newReturn = ref({ name: '', description: '', date: '' ,amount:'' })
 const editReturn = ref(null)
 const loading = ref(true)
+const total = ref('')
 
 const fetchReturns = async () => {
   try {
     const res = await api.get(`project_returns/${props.seasonId}`)
     returnItems.value = res.data.project_returns
+    total.value = res.data.total
   } catch (err) {
     console.error(err)
   } finally {
@@ -148,7 +150,13 @@ onMounted(() => {
     <div v-else>
       <table class="table table-bordered table-striped table-responsive">
         <thead class="table-light">
+        <tr>
+          <th colspan="5" class="text-center">TOTAL SALES<span class="ms-4">{{total}}</span></th>
+        </tr>
+        </thead>
 
+
+        <tbody>
         <tr>
           <th>Name</th>
           <th>Description</th>
@@ -156,8 +164,6 @@ onMounted(() => {
           <th>Date</th>
           <th style="width: 150px;">Actions</th>
         </tr>
-        </thead>
-        <tbody>
         <tr v-for="item in returnItems" :key="item.id">
           <td v-if="editReturn?.id !== item.id">{{ item.name }}</td>
           <td v-else><input v-model="editReturn.name" class="form-control" /></td>

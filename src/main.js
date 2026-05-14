@@ -2,14 +2,33 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 
-// ✅ Import Bootstrap CSS
+// ✅ Bootstrap CSS
 import 'bootstrap/dist/css/bootstrap.min.css'
-import 'bootstrap-icons/font/bootstrap-icons.css';
+import 'bootstrap-icons/font/bootstrap-icons.css'
 
-// ✅ (Optional) Import Bootstrap JS (for components like modals, dropdowns)
+// ✅ Bootstrap JS
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
-import Swal from 'sweetalert2';
-window.Swal = Swal;
+
+// ✅ SweetAlert
+import Swal from 'sweetalert2'
+window.Swal = Swal
+
+// ✅ Capacitor App
+import { App as CapacitorApp } from '@capacitor/app'
+
 const app = createApp(App)
+
 app.use(router)
+
 app.mount('#app')
+
+// ✅ Android back button handling
+CapacitorApp.addListener('backButton', () => {
+
+    if (window.location.pathname === '/') {
+        CapacitorApp.exitApp()
+    } else {
+        router.go(-1)
+    }
+
+})

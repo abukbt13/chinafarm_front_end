@@ -165,6 +165,12 @@ onMounted(() => {
 
         </thead>
         <tbody>
+        <tr v-if="expenses.length">
+          <td colspan="5" class="text-center text-muted"> Total Expense {{total}}</td>
+        </tr>
+        <tr v-if="!expenses.length">
+          <td colspan="4" class="text-center text-muted">No expenses found.</td>
+        </tr>
         <tr>
           <td>Name</td>
           <td>Description</td>
@@ -197,12 +203,7 @@ onMounted(() => {
           </td>
 
         </tr>
-        <tr v-if="expenses.length">
-          <td colspan="5" class="text-center text-muted"> Total Expense {{total}}</td>
-        </tr>
-        <tr v-if="!expenses.length">
-          <td colspan="4" class="text-center text-muted">No expenses found.</td>
-        </tr>
+
         </tbody>
       </table>
     </div>
