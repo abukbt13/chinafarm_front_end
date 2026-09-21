@@ -58,7 +58,7 @@ onMounted(() => {
 <template>
   <div class="container my-5">
     <div class="d-flex justify-content-around align-items-center mb-4">
-      <h4 class="mb-3">Planting  Suggestions</h4>
+      <h4 class="mb-3">Project  Suggestions</h4>
       <button
           class="btn btn-success"
           data-bs-toggle="modal"
@@ -92,12 +92,12 @@ onMounted(() => {
           <div class="modal-body">
             <form @submit.prevent="submitSuggestion">
               <div class="mb-3">
-                <label class="form-label">Crop Name</label>
+                <label class="form-label">Project Name</label>
                 <input v-model="cropName" type="text" class="form-control" required />
               </div>
 
               <div class="mb-3">
-                <label class="form-label">Planting Month</label>
+                <label class="form-label">Starting Month</label>
                 <select v-model="planting_month" class="form-control">
                   <option disabled value="">Select Month</option>
 
@@ -111,7 +111,7 @@ onMounted(() => {
                 </select>
               </div> 
               <div class="mb-3">
-                <label class="form-label">Harvesting Month</label>
+                <label class="form-label">Maturity Month</label>
                 <select v-model="harvesting_month" class="form-control">
                   <option disabled value="">Select Month</option>
 

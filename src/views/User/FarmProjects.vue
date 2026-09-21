@@ -19,7 +19,7 @@ const filteredPlans = computed(() => {
     )
   }
 
-  return plans.value.filter(item => item.status === 'completed')
+  return plans.value.filter(item => item.status === 'closed')
 })
 
 // Form states
@@ -227,7 +227,7 @@ onMounted(() => {
     >
 
       <h3 class="fw-bold mb-0">
-        🌾 My Projects
+         My Projects
       </h3>
 
       <div class="d-flex align-items-center gap-2">
@@ -373,12 +373,12 @@ onMounted(() => {
             <!-- Dates -->
             <p class="card-text">
 
-              Planted on:
+              Start Date on:
               {{ formatDate(item.start_date) }}
 
               <br>
 
-              Estimated harvest:
+              Estimated maturity:
 
               {{
                 item.end_date
@@ -478,7 +478,7 @@ onMounted(() => {
               {{
                 isEditing
                     ? '✏️ Edit Project'
-                    : '🌱 Add Planting Plan'
+                    : '🌱 New Project'
               }}
 
             </h1>
@@ -505,7 +505,7 @@ onMounted(() => {
               <div class="mb-3">
 
                 <label class="form-label">
-                  Crop Name
+                  Project Name
                 </label>
 
                 <input
@@ -581,7 +581,7 @@ onMounted(() => {
 
                 <label class="form-label">
 
-                  Maturity period in day (Optional)
+                  Project Duration (Optional)
 
                 </label>
 

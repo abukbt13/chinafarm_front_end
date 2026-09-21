@@ -148,8 +148,8 @@ onMounted(() => {
               </div>
             </div>
             <div class="border w-100 p-4 m-2">
-              <h3>📊 Profit</h3>
-              <div v-if="farmingprogress.project.description" class="">
+              <h3>📊 Profit </h3>
+              <div v-if="farmingprogress.project" class="">
                 <p class="text-gray-600">Ksh {{ farmingprogress.profit }}</p>
               </div>
           </div>
